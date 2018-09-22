@@ -1,0 +1,220 @@
+@CHARSET "UTF-8";
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600&subset=latin,greek,greek-ext);
+@import url(https://fonts.googleapis.com/css?family=Comfortaa:400,300,700);
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border-color: rgba(82, 100, 136, 0.8);
+  outline: 0;
+  outline: thin dotted \9;
+  /* IE6-9 */
+
+
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+$xxs:   530px;
+$xs:    767px;
+$sm:    768px;
+$smd:   800px;
+$md:    991px;
+$lg:   1199px;
+
+
+
+
+@mixin maxW($w) {
+    @media screen and (max-width: $w) {@content;}
+}
+
+@mixin minW($w) {
+    @media screen and (min-width: $w) {@content;}
+}
+ 
+@mixin xxs {
+    @include maxW($xxs) {@content;}
+} 
+
+@mixin xs {
+    @include maxW($xs) {@content;}
+} 
+
+@mixin sm {
+    @include minW($sm) {@content;}
+} 
+
+@mixin md {
+    @include minW($md) {@content;}
+} 
+
+@mixin lg {
+    @include minW($lg) {@content;}
+} 
+
+
+ 
+
+@include xs{
+   .container {
+         width: 100%;
+    }
+}
+
+@include sm {
+  .container {
+      width: 100%;
+  }
+}
+
+@include md {
+  .container {
+      width: 940px;
+  }
+}
+
+@include lg {
+  .container {
+      width: 940px;
+  }
+}
+
+
+#cssMode {
+  
+  position:fixed;
+  top:2px;
+  left:40%;
+  margin-left:auto;
+  margin-right:auto;
+  background-color:yellow;
+  /*border: 2px solid red;*/
+  color:red;
+  z-index:5;
+  padding:0px;
+
+
+  h1 {
+      font-size:1em;
+      padding:0px;
+      margin:0px auto;
+
+  }
+
+  @include xxs {
+    background-color:red;
+    font-size:2vw;
+  }
+
+  @include xs {
+    background-color:orange;
+    color:blue;
+  }
+
+   @include xxs {
+    background-color:red;
+    color:yellow;
+  }
+
+  @include sm {
+    background-color:yellow;
+  }
+  @include md {
+    background-color:cyan;
+  }
+  @include lg {
+    background-color:green;
+    color:yellow;
+  }
+
+}
+
+.visible-xxs {
+  display:none !important;
+}
+
+
+@include xxs{
+  .visible-xxs {
+    display:block !important;
+  }
+}
+
+
+// * {
+//         box-sizing: border-box !important;
+//         :hover {
+//           border:thin solid red;
+//         }
+// }
+
+.brandCyan{
+ color: $brand-cyan important;
+}
+
+.brandBlue {
+  color: $brand-blue important;
+}
+
+body {
+	/*font-family: 'Open Sans', sans-serif !important;*/
+  /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif !important; */
+  font-family: Calibri,sans-serif; 
+  /*font-family: Cambria,sans-serif; */
+	/*line-height:20px;*/
+  background-color:offwhite;
+  height:100vh;
+  overflow-y: scroll;
+
+}
+
+html,body{
+    height: 100vh;
+    width:  100%;
+}
+
+
+
+#app{
+
+
+
+}
+
+@import "topPart";
+
+@import "homePage";
+
+@import "bottomPart";
+
+
+
+@include xs {
+
+  .container, .container-fluid, .row , [class*=' col-'] {
+    margin-left: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    padding-right: 0px;
+  }
+
+}
+
+
+.pull-none {
+  float:none !important;
+}

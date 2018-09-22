@@ -1,0 +1,275 @@
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .1 ) 
+                url('/img/loading1.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    // overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+
+#homepage, #homepageTab, #sidebar {
+  height: calc(100vh - 55px) ;
+      @include sm {
+        height:auto;  
+      }
+
+}
+
+
+#homePage {
+    max-height:100%;
+
+    #homepageTab {
+      max-height: 100%; 
+    }
+
+
+    #alertBar { 
+        height:35px;
+        padding-bottom: 3px;
+        background-color: #AFFFDE;
+        font-size:24px;
+        /*margin-bottom:2px;*/
+        /*margin-top: 2px;*/
+        overflow: hidden;
+        width: 100vw;
+        margin-left:-14px;
+        margin-right:0px;
+    }
+
+    span#queryParams {
+      position:relative;
+      margin-top: 10px; 
+      font-size: 12px;
+      margin-bottom: 0px;
+      
+
+      > * {
+            float: right !important;
+      }
+
+      input {
+        display:inline;
+      }
+    }
+
+    span#arrows {
+
+      margin-top: 6px; 
+      font-size: 20px;
+      margin-bottom: 0px; 
+      max-height:20px;
+
+
+      span {
+        cursor: pointer; 
+        padding-right: 3px;
+        padding-left: 3px;
+      
+       &:hover {
+         background-color:#DFDEDE;
+       }
+      }
+
+    }
+
+    #ticketsListArea{
+        
+    }
+
+
+    #filtersBar { 
+    }
+
+
+    #rightArea {
+      
+      height: calc(100vh - 55px) ;
+
+      @include xs {
+        height:auto;  
+      }
+            @include sm {
+        height:auto;  
+      }
+
+    }
+
+   
+    #ticketsListTabs {
+      padding-right: 1px;
+    }
+
+    span#refreshTicketsList {
+      color:#5676FF;
+    }
+
+    span#refreshTicketsList.active {
+      color:#4CDB4C;
+    }
+
+    #ticketsListTabs #listTabs ,   #rightArea ul#ticketTabs  {
+          li  a {
+            color:black !important;
+          }
+          li.active a {
+              color:blue !important;
+          }
+          li.active:hover a {
+              color:green !important;
+          }
+          li:hover a{
+              color:orange !important;;
+          }
+  }
+
+#ticketsList {   
+      @include xs {
+        height:auto;  
+        max-height: calc(50vh) ; 
+        min-height: 50px ; 
+        overflow-y: auto;
+      }
+      @include sm {
+        height:auto;  
+        max-height: calc(50vh) ; 
+        min-height: 50px ; 
+        overflow-y: auto;
+      }
+
+      @include md{
+         max-height: calc(100vh - 100px) ; 
+         min-height: calc(100vh - 100px) ; 
+         height: calc(100vh - 100px) ; 
+         overflow-y: auto;
+         padding-right: 1px;
+      }
+
+      table {
+     
+       width: 100%;
+       border-collapse: separate;
+       border-spacing: 1px;
+       color:blue;
+
+       thead {
+        background-color:#D4E2F9;
+       }
+
+        &,  th, td {
+          font-size:12px;
+          border-bottom: 1px solid gray;
+          border-top: 1px solid gray;
+          border-left: none;
+          border-right: none;
+        }
+
+          tbody tr {
+                      color:blue;
+          }
+          tbody tr:nth-child(odd) { background-color:white}
+          tbody tr:nth-child(even) {background-color:$gray}
+          tbody tr:hover {
+          background-color:#FEFFBD;
+          cursor: pointer; 
+          }
+
+        tr.ticketPriorityHigh > td {
+          color:#B01A1A !important;
+        }
+
+        tbody tr.newTicket  {
+          background-color:#ED1E36;
+          color:orange !important;
+          &:hover {
+             background-color:yellow !important;;
+             color:red  !important;
+          cursor: pointer; 
+          }
+        }
+
+         
+        tbody{
+          /*height:100vh;*/
+          /*overflow-y:auto;*/
+          width: 100%;
+        }
+      }  
+    }
+
+
+   
+    #aTicket{
+
+    }
+
+
+    #newTicket , #editTicket{
+      padding-left: 5px;
+
+    }
+
+
+    #ticketData{
+
+
+      div#category_wrapper,  div#priority_wrapper{
+        padding-left: 0px;
+        padding-right : 0px;
+      }
+
+      div#category_wrapper{
+        width:20em;
+      }  
+
+      div#priority_wrapper{
+      }
+
+    }
+
+
+    div#ticketUpdates{
+      border:1px solid $gray;
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+      max-height:45ch;
+      overflow-y:  auto;
+
+      & > div:nth-child(odd) {
+        background-color: $gray;
+      }
+    }
+
+
+    #ticketActions{
+      margin-top:1em;
+
+    }
+     
+
+}

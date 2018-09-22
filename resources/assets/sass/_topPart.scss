@@ -1,0 +1,44 @@
+$menuBackground:$navbar-default-bg;
+
+#topPart {
+    position: relative;
+    padding: 0px 0px 0px 0px;
+    z-index: 1;
+    width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom:0px;
+    background-color:$navbar-default-bg;
+    border-bottom:solid 1px #eee;
+    border-left:none;
+    flex-grow:1;
+    
+
+    button {
+     margin-top:12px;
+    }
+
+    a, span#header_username {
+
+        font-family:sans-serif;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    } 
+    
+    a , span#header_username  {
+           
+            font-size:14px;       
+
+            &.navbar-brand {
+                font-size:22px;
+            }
+        }
+
+    .navbar-brand {
+    }
+}
+
+
+@media screen and (max-width: 450px) {
+    
+}
