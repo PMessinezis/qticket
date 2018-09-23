@@ -611,7 +611,7 @@ const App = new Vue({
                 };
 
 
-                me.newTicket= ! me.user.isResolver;
+                me.newTicket= ! me.user.isResolver || ! me.tickets.length ;
                 me.startAutoUpdate();
                 me.showHideNewTicket();
 

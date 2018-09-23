@@ -28750,7 +28750,7 @@ var App = new Vue({
                     me.onbehalfofuid = me.user.uid;
                 };
 
-                me.newTicket = !me.user.isResolver;
+                me.newTicket = !me.user.isResolver || !me.tickets.length;
                 me.startAutoUpdate();
                 me.showHideNewTicket();
 
