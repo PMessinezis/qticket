@@ -9999,14 +9999,6 @@ input[type="color"]:focus,
   }
 }
 
-.brandCyan {
-  color: #40c7f4 important;
-}
-
-.brandBlue {
-  color: #1f1d5b important;
-}
-
 body {
   /*font-family: 'Open Sans', sans-serif !important;*/
   /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif !important; */
@@ -10059,6 +10051,14 @@ body {
 #topPart a.navbar-brand,
 #topPart span#header_username.navbar-brand {
   font-size: 22px;
+}
+
+#topPart span.brandCyan {
+  color: #40C7F4 !important;
+}
+
+#topPart span.brandBlue {
+  color: #1F1D5B !important;
 }
 
 /* Start by setting display:none to make this hidden.

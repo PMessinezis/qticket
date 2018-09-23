@@ -34,8 +34,14 @@ $menuBackground:$navbar-default-bg;
             }
         }
 
-    .navbar-brand {
-    }
+span.brandCyan{
+ color: $brand-cyan !important;
+}
+
+span.brandBlue {
+  color: $brand-blue !important;
+}
+
 }
 
 
