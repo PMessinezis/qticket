@@ -260,19 +260,19 @@ function readCRSensors(){
 
 
 function getStaticData(){
-    $u=Auth::User() ? Auth::User()->load('resolver')->toArray() : null ;
-    $res = [
+    $u=Auth::User() ? Auth::User()->load('resolver') : null ;
+    $res = collect([
      
     'user'=> $u,  
-    'categories'=>App\Category::all()->toArray(),
-    'statuses'=>App\Status::all()->toArray(),
-    'groups'=>App\Group::where("isActive",true)->orderBy("name")->get()->toArray(),
-    'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get()->toArray(),
-    'vendors'=>App\Vendor::all()->toArray(),
-    'rootcauses'=> App\RootCause::all()->toArray(),
-    'users'=> App\User::orderBy('lastname')->get()->toArray(),
+    'categories'=>App\Category::all(),
+    'statuses'=>App\Status::all(),
+    'groups'=>App\Group::where("isActive",true)->orderBy("name")->get(),
+    'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get(),
+    'vendors'=>App\Vendor::all(),
+    'rootcauses'=> App\RootCause::all(),
+    'users'=> App\User::orderBy('lastname')->get(),
     
-     ]
+     ])
     ;
     return $res ;
   }
