@@ -15,9 +15,9 @@ class MakeAlertsTable extends Migration
     {
         Schema::create('alerts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('alert', 1000);
+            $table->string('alert', 1000)->nullable();
             $table->string('updatedBy', 32);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

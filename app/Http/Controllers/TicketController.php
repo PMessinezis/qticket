@@ -83,7 +83,9 @@ class TicketController extends CrudController
     $terminalStatuses=Status::where('isTerminal', '1')->get()->pluck('id');
     $terminalStatuses=$terminalStatuses->implode(',');
     if ( ! isset($after) || ! $after)  {
-      $statusWhere= "  ( ( closedDateTime is NULL ) and ( status_id not in ( " . $terminalStatuses . " ) )  ) " ;
+      $statusWhere= "  ( ( closedDateTime is NULL ) " .
+         ( $terminalStatuses ? "and ( status_id not in ( " . $terminalStatuses . " ) ) " : "" )
+         . " ) " ;
     }
     if ($status) {
       $activeMode   =   $status == 'active';
@@ -91,8 +93,8 @@ class TicketController extends CrudController
       $allMode      =   $status == 'statusall';
       if ($allMode) {
         $statusWhere=' ( TRUE ) ';
-      } else if ($activeMode) {
-        $statusWhere = "  ( Not ( status_id in ( " . $terminalStatuses . " ) ) ) " ;
+      } else if ($activeMode ) {
+        $statusWhere = $terminalStatuses ? "  ( Not ( status_id in ( " . $terminalStatuses . " ) ) ) " : " " ;
       } else if ($terminalMode) {
         $statusWhere = "  ( ( closedDateTime is NOT NULL ) or ( status_id in ( " . $terminalStatuses . " ) )  ) " ;
       } else {

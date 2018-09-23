@@ -94,7 +94,7 @@ Route::group(['prefix' => 'json', 'middleware' => ['SSO'] ], function()
 	Route::get('users', function(){return App\User::orderBy('lastname')->get();});
 	Route::get('alert', function(){
 		$alerts=DB::table('alerts')->select('*')->orderBy('id','desc')->get();
-		return $alerts[0]->alert;
+		return (count($alerts) ? $alerts[0]->alert :  "");
 	});
 	Route::post('/setalert', function(){
 		if (Auth::User()->isAdmin()) {
