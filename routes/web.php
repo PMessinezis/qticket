@@ -65,26 +65,24 @@ Route::group(['prefix' => 'json', 'middleware' => ['SSO'] ], function()
 	Route::get('user', function(){return Auth::User()->load('resolver');});
 
 	Route::get('static', function(){
-		$u=Auth::User() ? Auth::User() : null ;
-		return $u;
-		$res = //collect(
+		$u=Auth::User() ? Auth::User()->load('resolver') : null ;
+		$res = collect(
 			[
-		'user'=> $u->toArray(),	
-		'categories'=>App\Category::all()->toArray(),
-		'statuses'=>App\Status::all()->toArray(),
-		'groups'=>App\Group::where("isActive",true)->orderBy("name")->get()->toArray(),
-		// 'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get()->toArray(),
-		'vendors'=>App\Vendor::all()->toArray(),
-		'rootcauses'=> App\RootCause::all()->toArray(),
-		// 'users'=> App\User::orderBy('lastname')->get()->toArray(),
+		'user'=> $u,	
+		'categories'=>App\Category::all(),
+		'statuses'=>App\Status::all(),
+		'groups'=>App\Group::where("isActive",true)->orderBy("name")->get(),
+		'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get(),
+		'vendors'=>App\Vendor::all(),
+		'rootcauses'=> App\RootCause::all(),
+		'users'=> App\User::orderBy('lastname')->get(),
 		]
-		// )
+		 )
 		;
-		dd($res);	
-		dd($res , $res->toArray());
-		$r=response()->json($res);
-		dd($r);
-		return $r ;
+		//dd($res , $res->toJson(JSON_PRETTY_PRINT));
+		//$r=response()->json($res);
+		//dd($r);
+		return $res ;
 	});
 
 	Route::get('categories', function(){return App\Category::all(); });
