@@ -62,7 +62,7 @@ class User extends Authenticatable
     public function isAdmin()
     {
         if ( $this->resolver ) {
-            return $this->resolver->isAdmin();
+            return $this->resolver()->first()->isAdmin();
         } else {
             return $this->id==1 || User::all()->count()==0;
         }
