@@ -364,6 +364,11 @@ public function handleFile($ticket, $request) {
     return parent::updateCrud();
   }
 
+  public function getStaticData(){
+    return getStaticData();
+  }
+
+
 }
 
 

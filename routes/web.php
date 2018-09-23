@@ -64,26 +64,8 @@ Route::group(['prefix' => 'json', 'middleware' => ['SSO'] ], function()
 {
 	Route::get('user', function(){return Auth::User()->load('resolver');});
 
-	Route::get('static', function(){
-		$u=Auth::User() ? Auth::User()->load('resolver') : null ;
-		$res = collect(
-			[
-		'user'=> $u,	
-		'categories'=>App\Category::all(),
-		'statuses'=>App\Status::all(),
-		'groups'=>App\Group::where("isActive",true)->orderBy("name")->get(),
-		'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get(),
-		'vendors'=>App\Vendor::all(),
-		'rootcauses'=> App\RootCause::all(),
-		'users'=> App\User::orderBy('lastname')->get(),
-		]
-		 )
-		;
-		//dd($res , $res->toJson(JSON_PRETTY_PRINT));
-		//$r=response()->json($res);
-		//dd($r);
-		return $res ;
-	});
+	Route::get('static',  'TicketController@getStaticData'); 
+	
 
 	Route::get('categories', function(){return App\Category::all(); });
 	Route::get('statuses', function(){return App\Status::all(); });
