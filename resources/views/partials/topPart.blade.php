@@ -27,23 +27,23 @@
          <li> <a href=""> {{ Auth::User()->name }} </a> </li>
         @endif 
         @if(Auth::User()->isResolver)
-         <li><a href={{ myURL("export") }} style='color:#FFCD03'> <i class="fas fa-download"> </i> Export</a></li>
+         <li><a href={{ myURL("export") }} style='color:#1f1d5b'> <i class="fas fa-download"> </i> Export</a></li>
         @endif 
         @if(Auth::User()->isAdmin())
          
-          <a v-show='!editAlert' href="#" @click="startEditAlert" ><i class="fas fa-bullhorn" style="display:inline;  color:#FFCD03; padding-top:10px; display:inline; " ></i> 
+          <a v-show='!editAlert' href="#" @click="startEditAlert" ><i class="fas fa-bullhorn" style="display:inline;  color:#1f1d5b; padding-top:10px; display:inline; " ></i> 
           </a>
          
          
            <li v-show='editAlert'>
-              <form style="padding-top:10px; display:inline;  color:#FFCD03" > 
+              <form style="padding-top:10px; display:inline;  color:#1f1d5b" > 
                 ALERT : 
                 <input v-model='alert' style="margin-top:10px; display:inline ;  color:black; width:600px; " /> 
-                <a href="#" @click="updateAlert" ><i class="fas fa-save" style="display:inline;  color:#FFCD03"> </i> </a>
+                <a href="#" @click="updateAlert" ><i class="fas fa-save" style="display:inline;  color:#1f1d5b"> </i> </a>
               </form> 
            </li>
          
-         <li><a href={{ myURL("admin") }} style='color:#FFCD03'> <i class="fas fa-user-secret"> </i> Admin panel</a></li>
+         <li><a href={{ myURL("admin") }} style='color:#1f1d5b'> <i class="fas fa-user-secret"> </i> Admin panel</a></li>
 
         @endif 
         

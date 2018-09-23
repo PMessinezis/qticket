@@ -11,6 +11,7 @@ class CreateGroupsTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 40)->unique();
 			$table->integer('department_id')->unsigned()->index();
+			$table->boolean('notifyMembers')->default(0);
 			$table->boolean('isActive')->default(1);
 			$table->timestamps();
 		});

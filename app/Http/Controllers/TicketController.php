@@ -309,9 +309,12 @@ public function handleFile($ticket, $request) {
   {
     $reply = (object) array();
     $t=new Ticket;
-    // dd($request->all());
+     dd($request->all());
     $t->requestedBy_uid=Auth::User()->uid;
     $t->onBehalfOf_uid=$request->input('onBehalfOf_uid');
+    if (! $t->onBehalfOf_uid) {
+         $t->onBehalfOf_uid=$request->input('requestedBy_uid');
+    }
     $t->title=$request->input('title');
     $t->category_id=$request->input('category_id');
     $t->description=$request->input('description');

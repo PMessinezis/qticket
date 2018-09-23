@@ -14,7 +14,7 @@
 // Auth::routes();
 
 
-Route::get('/checksensors', function() { return readCRSensors(); });
+// Route::get('/checksensors', function() { return readCRSensors(); });
 
 
 Route::group(['middleware' => ['SSO'] ], function() {
@@ -65,18 +65,26 @@ Route::group(['prefix' => 'json', 'middleware' => ['SSO'] ], function()
 	Route::get('user', function(){return Auth::User()->load('resolver');});
 
 	Route::get('static', function(){
-		$res = collect([
-		'user'=> Auth::User()->load('resolver'),	
-		'categories'=>App\Category::all(),
-		'statuses'=>App\Status::all(),
-		'groups'=>App\Group::where("isActive",true)->orderBy("name")->get(),
-		'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get(),
-		'vendors'=>App\Vendor::all(),
-		'rootcauses'=> App\RootCause::all(),
-		'users'=> App\User::orderBy('lastname')->get(),
-		]);
-		
-		return $res;
+		$u=Auth::User() ? Auth::User() : null ;
+		return $u;
+		$res = //collect(
+			[
+		'user'=> $u->toArray(),	
+		'categories'=>App\Category::all()->toArray(),
+		'statuses'=>App\Status::all()->toArray(),
+		'groups'=>App\Group::where("isActive",true)->orderBy("name")->get()->toArray(),
+		// 'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get()->toArray(),
+		'vendors'=>App\Vendor::all()->toArray(),
+		'rootcauses'=> App\RootCause::all()->toArray(),
+		// 'users'=> App\User::orderBy('lastname')->get()->toArray(),
+		]
+		// )
+		;
+		dd($res);	
+		dd($res , $res->toArray());
+		$r=response()->json($res);
+		dd($r);
+		return $r ;
 	});
 
 	Route::get('categories', function(){return App\Category::all(); });
