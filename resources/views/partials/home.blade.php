@@ -5,7 +5,7 @@
 
 <div id=homePage class="container-fluid">
   <div id=loading class=modal></div>	
-	<div class="row" v-if="alert" id=alertBar>
+	<div class="row" v-if="alert" v-show="alert" id=alertBar style="display:none">
 		<vue-alerts :alerts-text="alert" ></vue-alerts>
 	</div>
 

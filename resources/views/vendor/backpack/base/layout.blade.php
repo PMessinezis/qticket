@@ -29,7 +29,27 @@
 
     <!-- BackPack Base CSS -->
     <link rel="stylesheet" href="{{ asset('vendor/backpack/backpack.base.css') }}">
+<style type="text/css">
+  
+  header.main-header {
+  background-color: white;
+ }
 
+   header.main-header>a {
+  background-color: white;
+ }
+  header.main-header>a>span.brandCyan{
+ color: #40C7F4 !important;
+ background-color: white;
+}
+
+header.main-header>a>span.brandBlue {
+  color: #1F1D5B !important;
+  background-color: white;
+}
+} 
+
+</style>
     @yield('after_styles')
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -43,13 +63,12 @@
     <!-- Site wrapper -->
     <div class="wrapper">
 
-      <header class="main-header">
+      <header class="main-header" >
         <!-- Logo -->
         <a href="{{ url('') }}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini">{!! config('backpack.base.logo_mini') !!}</span>
-          <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">{!! config('backpack.base.logo_lg') !!}</span>
+          
+      <span class='brandCyan'>Q</span><span class=brandBlue>ticket</span> 
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">

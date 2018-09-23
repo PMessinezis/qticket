@@ -35,7 +35,7 @@
           </a>
          
          
-           <li v-show='editAlert'>
+           <li v-show='editAlert' style='display:none'>
               <form style="padding-top:10px; display:inline;  color:#1f1d5b" > 
                 ALERT : 
                 <input v-model='alert' style="margin-top:10px; display:inline ;  color:black; width:600px; " /> 

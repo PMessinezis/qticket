@@ -15,7 +15,7 @@
         </div> -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-          <li class="header">{{ trans('backpack::base.administration') }}</li>
+          <li class="header">Administration</li>
           <!-- ================================================ -->
           <!-- ==== Recommended place for admin menu items ==== -->
           <!-- ================================================ -->

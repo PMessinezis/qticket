@@ -40,7 +40,7 @@ class TicketController extends CrudController
       $tq=Ticket::where('title','like', $k )->orwhere('description', 'like', $k);
       $tq=$tq->with('updates')->orWhereHas('updates', function($q) use ( $k ){
           $q->where('comment', 'like', $k)->orwhere('changeslog', 'like', $k); })->orWhere('vendorRef', 'like', $k) ;
-      if (strtoupper(substr(trim($keyword),0,2))=='ET') {
+      if (strtoupper(substr(trim($keyword),0,2))=='QT') {
         if (strlen(trim($keyword))==7) {
           $ref=substr(trim($keyword),2,5);
           if (is_numeric($ref)){
@@ -311,7 +311,7 @@ public function handleFile($ticket, $request) {
   {
     $reply = (object) array();
     $t=new Ticket;
-     dd($request->all());
+     // dd($request->all());
     $t->requestedBy_uid=Auth::User()->uid;
     $t->onBehalfOf_uid=$request->input('onBehalfOf_uid');
     if (! $t->onBehalfOf_uid) {

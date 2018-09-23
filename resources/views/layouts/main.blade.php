@@ -30,7 +30,7 @@
 
 <body>
     <div id="app">
-
+<!-- 
 @if( Auth::User()->isAdmin() )
         <div id=cssMode >
             <h1 class="visible-xxs">Extra-Extra SMALL screen -xxs-</h1>
@@ -41,9 +41,10 @@
         </div>
 @endif
 
+ -->       
         @include('partials.topPart')
         {{-- <div id='homepageTab'> --}}
-            @include('partials.home')
+        @include('partials.home')
         {{-- </div> --}}
         @include('partials.bottomPart')
 
