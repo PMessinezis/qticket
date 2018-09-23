@@ -141,7 +141,7 @@ const App = new Vue({
         me.getAlert() ;
         me.timerAlert=setInterval(me.getAlert, intervalAlert);            
         me.getStaticDataNew(me.getDynamicData) ;
-        this.notify('Welcome to qticket',2);
+        this.notify('Welcome to Qticket',2);
     },
 
     beforeDestroy() {
@@ -453,7 +453,7 @@ const App = new Vue({
 
 
         notify(s, timeout){
-            this.windowsNotify('qticket',s,timeout)
+            this.windowsNotify('Qticket',s,timeout)
         },
 
 

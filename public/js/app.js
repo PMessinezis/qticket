@@ -28261,7 +28261,7 @@ var App = new Vue({
         me.getAlert();
         me.timerAlert = setInterval(me.getAlert, intervalAlert);
         me.getStaticDataNew(me.getDynamicData);
-        this.notify('Welcome to qticket', 2);
+        this.notify('Welcome to Qticket', 2);
     },
     beforeDestroy: function beforeDestroy() {
         this.stopAutoUpdate();
@@ -28586,7 +28586,7 @@ var App = new Vue({
             }
         },
         notify: function notify(s, timeout) {
-            this.windowsNotify('qticket', s, timeout);
+            this.windowsNotify('Qticket', s, timeout);
         },
         alertNewTickets: function alertNewTickets(newT) {
             var me = this;
