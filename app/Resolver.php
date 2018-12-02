@@ -27,7 +27,7 @@ class Resolver extends Model
 
     public function getUserWithUIDAttribute()
     {
-        return $this->user->name . '  ('. $this->user->uid . ')';
+        return $this->user->name ;
     }
 
     public function groups()
@@ -83,7 +83,7 @@ class Resolver extends Model
  
     public function getListnameAttribute(){
         $u= User::find($this->user_uid);
-        return $u->lastname . ' ' . $u->email;
+        return $u->fullname ;
     }
 
     public function getFullnameAttribute(){

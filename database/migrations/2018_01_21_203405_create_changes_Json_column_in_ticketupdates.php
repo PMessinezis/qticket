@@ -29,10 +29,10 @@ class CreateChangesJsonColumnInTicketupdates extends Migration
     public function down()
     {
         Schema::table('ticketupdates', function (Blueprint $table) {
-            $table->string('what');
-            $table->string('newValue');
+            // $table->string('what');
+            // $table->string('newValue');
 
-            $table->dropColumn('changes');
+            // $table->dropColumn('changes');
         });
     }
 }

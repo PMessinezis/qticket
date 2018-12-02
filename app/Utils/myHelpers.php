@@ -3,7 +3,7 @@
 
 
 function ldapcheckfixdates($v){
-    if (is_numeric($v) and  strlen($v)>12 ) {
+    if (is_numeric($v) and  strlen($v)>13 ) {
         $win_secs = (int)($v / 10000000);
         $unix_timestamp = (int)($win_secs - 11644473600);
         $v= date('d M, Y H:m:s A T', $unix_timestamp);
@@ -19,10 +19,9 @@ function array_map_assoc($array){
   return $r;
 }
 
-function ldapinfo($uid){
+function ldapinfoByAttr($attrN, $attrV){
     $ldapinfo=collect([]);
     if (function_exists('ldap_connect')) {
-        $auser=$uid;
         $ldap=ldap_connect(config('qticket.LDAP_DOMAIN'));
         ldap_set_option ($ldap, LDAP_OPT_REFERRALS, 0);
         ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -30,7 +29,7 @@ function ldapinfo($uid){
         $decrypted = Crypt::decryptString($encrypted);
         $ldapbind = ldap_bind($ldap, config('qticket.LDAP_USER'), $decrypted);
         if ($ldapbind) {                 
-           $ldapFilter="(&(objectCategory=person)(objectClass=user)(sAMAccountName=$auser))" ;
+           $ldapFilter="(&(objectCategory=person)(objectClass=user)($attrN=$attrV))" ;
            $fields=array("*");
            $res=ldap_search($ldap,config('qticket.LDAP_ROOT'),$ldapFilter, $fields);
            $entries=ldap_get_entries($ldap,$res);
@@ -62,6 +61,10 @@ function ldapinfo($uid){
         }   
     }     
     return $ldapinfo;
+}
+
+function ldapinfo($uid){
+    return ldapinfoByAttr('sAMAccountName',$uid) ;
 }
 
 
@@ -274,5 +277,6 @@ function getStaticData(){
     
      ])
     ;
+    // dd($res);
     return $res ;
   }

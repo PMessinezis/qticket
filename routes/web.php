@@ -70,7 +70,7 @@ Route::group(['prefix' => 'json', 'middleware' => ['SSO'] ], function()
 	Route::get('categories', function(){return App\Category::all(); });
 	Route::get('statuses', function(){return App\Status::all(); });
 	Route::get('groups', function(){return App\Group::where("isActive",true)->orderBy("name")->get(); });
-	Route::get('resolvers', function(){return App\Resolver::with('user')->get(); });
+	Route::get('resolvers', function(){return App\Resolver::with('user')->orderBy("lastname")->get(); });
 	Route::get('vendors', function(){return App\Vendor::all(); });
 	Route::get('rootcauses', function(){return App\RootCause::all(); });
 	Route::get('users', function(){return App\User::orderBy('lastname')->get();});

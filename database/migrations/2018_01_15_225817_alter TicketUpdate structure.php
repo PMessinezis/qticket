@@ -34,15 +34,15 @@ class AlterTicketUpdateStructure extends Migration
     public function down()
     {
         Schema::table('ticketupdates', function (Blueprint $table) {
-            $table->integer('fromStatus_id');
-            $table->integer('toStatus_id');
-            $table->dropColumn('what');
-            $table->dropColumn('newValue');
-            $table->dropColumn('attachment_id');
+            // $table->integer('fromStatus_id');
+            // $table->integer('toStatus_id');
+            // $table->dropColumn('what');
+            // $table->dropColumn('newValue');
+            // $table->dropColumn('attachment_id');
         });
 
         Schema::table('attachments', function(Blueprint $table) {
-            $table->dropColumn('ticket_id');
+            // $table->dropColumn('ticket_id');
         });
     }
 }

@@ -10,11 +10,13 @@ class CreateGroupsTable extends Migration {
 		Schema::create('groups', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('name', 40)->unique();
-			$table->integer('department_id')->unsigned()->index();
+			$table->integer('department_id')->unsigned()->nullable()->index();
 			$table->boolean('notifyMembers')->default(0);
 			$table->boolean('isActive')->default(1);
 			$table->timestamps();
 		});
+
+		App\Group::create(['name' => 'Helpdesk']);
 	}
 
 	public function down()

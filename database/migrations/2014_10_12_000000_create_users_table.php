@@ -18,6 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('uid', 16)->unique();
             $table->string('firstname', 100)->index();
             $table->string('lastname', 100)->index();
+            $table->string('title', 100)->nullable()->index();
+            $table->string('description', 100)->nullable()->index();
+            $table->string('employeeid', 10)->nullable()->index();
             $table->string('directorate', 100)->nullable()->index();
             $table->string('tmhma', 100)->nullable()->index();
             $table->string('nomiko', 100)->nullable()->index();

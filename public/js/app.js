@@ -28696,6 +28696,12 @@ var App = new Vue({
             var myMap = function myMap(rec, index, arr) {
                 return { id: rec.id, text: rec.name };
             }; // all the rest
+            var SortByText=function(a, b){
+                    log(a);
+                  var aName = a.text;
+                  var bName = b.text; 
+                  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
             var retryWait = 3000;
 
             me.retriesCount = me.retriesCount + 1;
@@ -28734,7 +28740,12 @@ var App = new Vue({
                 if (me.user.isAdmin) g.unshift({ id: 999, text: 'All Groups' });
                 me.$set(me, 'showGroupsList', g);
 
+
+
+
+
                 var r = SD.resolvers.map(resolverslistmap);
+                r.sort(SortByText);
                 me.$set(me, 'resolverlist', r);
 
                 var v = SD.vendors.map(myMap);

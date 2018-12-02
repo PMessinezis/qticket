@@ -47,11 +47,11 @@ class User extends Authenticatable
     }
     
     public function getNameAttribute(){
-        return $this->fullname . " ($this->uid)";
+        return $this->fullname . " ($this->email)";
     }
 
     public function getListnameAttribute(){
-        return $this->fullname . " ($this->uid) " . $this->email;
+        return $this->fullname . " ($this->email)" ;
     }
 
     public function resolver()
@@ -99,6 +99,29 @@ class User extends Authenticatable
     public function ldapinfo()
     {
         return ldapinfo($this->uid);
+    }
+
+ 
+
+    public static function fromLDAP($auser){
+        $ld=ldapinfo($auser);
+        $user=User::where('uid',$auser)->first();
+        if (! isset($user) ) {
+            $user=new User;
+        }
+        $user->uid=$auser;
+        $user->firstname=( $ld['givenname'] ?? '' );
+        $user->lastname=( $ld['sn'] ?? '' );
+        $user->employeeid=( $ld['employeeid'] ?? '' );
+        $user->title=( $ld['title'] ?? '' );
+        $user->description=( $ld['description'] ?? '' );
+        $user->email=( $ld['mail'] ?? '' );        
+        $user->phone1=( $ld['telephonenumber'] ?? '' );  
+        $user->phone2=( $ld['mobile'] ?? '' );
+        $user->topothesia=( $ld['streetaddress'] ?? '' ) . ", " . ( $ld['l'] ?? '' );   ;      
+        $user->isTempEntry=true;
+        $user->save();
+        return $user;
     }
 
 }
