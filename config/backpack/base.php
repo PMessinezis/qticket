@@ -79,4 +79,11 @@ return [
     // Fully qualified namespace of the User model
     'user_model_fqn' => '\App\User',
 
+    // The guard that protects the Backpack admin panel.
+    // If null, the config.auth.defaults.guard value will be used.
+    'guard' => 'backpack',
+
+    // The password reset configuration for Backpack.
+    // If null, the config.auth.defaults.passwords value will be used.
+    'passwords' => 'backpack',
 ];

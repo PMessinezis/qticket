@@ -28834,7 +28834,7 @@ var App = new Vue({
         },
         userDetails: function userDetails(user) {
             var me = this;
-            return '<div> <b>' + user.description + '</b> ' + '<a href="' + me.mailTo(user) + '" >' + user.email + '</a></div>' + '<div> ' + user.title + ' / ' + user.topothesia + '</div>' + '<div> phones : ' + user.phone1 + ' , ' + user.phone2 + '</div>';
+            return '<div> <b>' + user.description + '</b> ' + '<a href="' + me.mailTo(user) + '" >' + user.email + '</a></div>' + '<div> ' + user.title + '</div>' + '<div> phones : ' + user.phone1 + ' , ' + user.phone2 + '</div>';
         },
         showNewTicket: function showNewTicket() {
             this.newTicket = true;
