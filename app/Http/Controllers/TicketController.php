@@ -215,7 +215,7 @@ public function handleFile($ticket, $request) {
         $a->fileExt=$file->guessExtension();
         $a->mimeType=$file->getMimeType();
         $a->size=$file->getClientSize();
-        if ($a->mimeType=='application/CDFV2-unknown') {
+        if ($a->mimeType=='application/CDFV2-unknown' || $a->mimeType=='application/vnd.ms-outlook') {
           $a->mimeType=$file->getClientMimeType();
           // if (a->fileExt=='') a-1>fileExt=$file->getExtension();
           if ($a->fileExt=='') $a->fileExt=$file->getClientOriginalExtension();

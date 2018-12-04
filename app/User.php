@@ -47,11 +47,11 @@ class User extends Authenticatable
     }
     
     public function getNameAttribute(){
-        return $this->fullname . " ($this->uid)";
+        return $this->fullname ;
     }
 
     public function getListnameAttribute(){
-        return $this->fullname . " ($this->uid) " . $this->email;
+        return $this->fullname . " ($this->email)" ;
     }
 
     public function resolver()
@@ -100,5 +100,47 @@ class User extends Authenticatable
     {
         return ldapinfo($this->uid);
     }
+
+ 
+    public  function refreshFromLDAP(){
+        $ld=$this->ldapinfo();
+        if ($ld->count()) {
+            $this->firstname=( $ld['givenname'] ?? '' );
+            $this->lastname=( $ld['sn'] ?? '' );
+            $this->employeeid=( $ld['employeeid'] ?? '' );
+            $this->title=( $ld['title'] ?? '' );
+            $this->description=( $ld['description'] ?? '' );
+            $this->email=( $ld['mail'] ?? '' );        
+            $this->phone1=( $ld['telephonenumber'] ?? '' );  
+            $this->phone2=( $ld['mobile'] ?? '' );
+            $adr= $ld['streetaddress'] ?? '' ;
+            $city= $ld['l'] ?? '' ;
+            if ($adr != '' && $city != '') $adr=$adr . ', ';
+            $this->topothesia=  $adr . $city;      
+            $this->save();
+        }
+        return $this;
+    }
+
+
+    public static function fromLDAP($auser){
+        $user=self::where('uid',$auser)->first();
+        if (! isset($user) ) {
+            $user=new User;
+            $user->uid=$auser;
+            $user->isTempEntry=true;
+        }
+        $user->refreshFromLDAP();
+        return $user;
+    }
+
+
+    public static function refreshAllfromLDAP(){
+        $Users= self::all();
+        foreach ($Users as $u ) {
+            $u->refreshFromLDAP();
+        }
+    }
+
 
 }

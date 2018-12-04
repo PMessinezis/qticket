@@ -9,9 +9,14 @@ class CreateStatusesTable extends Migration {
 	{
 		Schema::create('statuses', function(Blueprint $table) {
 			$table->increments('id');
-			$table->timestamps();
 			$table->string('name', 32)->unique();
+			$table->boolean('isTerminal')->nullable()->index()->default(0);//
+			$table->timestamps();
 		});
+
+		App\Status::create(['name' => 'Open'] );
+		App\Status::create(['name' => 'Closed'    , 'isTerminal' => 1 ] );
+		App\Status::create(['name' => 'Cancelled' , 'isTerminal' => 1 ] );
 	}
 
 	public function down()

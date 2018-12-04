@@ -30,7 +30,7 @@
 
 			<span v-if='user.isResolver && aTicket.clientInfo' class=' col-md-3 pull-right' style='font-size:0.9em ; text-align:right ; padding-right:0px;'> @{{ aTicket.clientInfo }}</span>
 			@if ( ! Auth::user()->isResolver )
-				<vcontrol type='button' class='col-md-2 pull-right' style='color:blue; position: absolute; top:-10px; right:0px'  v-on:click="closqticket()" >&nbsp Close ticket </vcontrol> 
+				<vcontrol type='button' class='col-md-2 pull-right' style='color:blue; position: absolute; top:-10px; right:0px'  v-on:click="closeTicket()" >&nbsp Close ticket </vcontrol> 
 				<vcontrol type='button' class='col-md-2 pull-right' style='color:red; position: absolute; top:30px; right:0px'  v-on:click="cancelTicket()" >Cancel ticket</vcontrol> 
 			@else	
 				<vcontrol type='button' class='col-md-2 pull-right' style='color:red; position: absolute; top:10px; right:0px'  v-on:click="cancelTicket()" >Cancel ticket</vcontrol> 
@@ -104,14 +104,14 @@
 				<vcontrol v-if=aTicket type='select' id=vendor form='editTicket' :options='vendorlist'  v-model='aTicket.assignedVendor_id' name='assignedVendor_id'  label='Vendor:'  :allowclear='true' placeholder='vendor' class=col-md-2>
 				</vcontrol>
 
-				<vcontrol v-if=aTicket type='text' id=vendorRef form='editTicket' :allowclear='true'  :value='aTicket.vendorRef' v-model='aTicket.vendorRef' name='vendorRef'  label='Ref#' class=col-md-2 >
+				<vcontrol v-if=aTicket type='text' id=vendorRef form='editTicket' :allowclear='true'  :value='aTicket.vendorRef' v-model='aTicket.vendorRef' name='vendorRef'  label='Vendor Ref#' class=col-md-2 >
 				</vcontrol>
  
 				
-				<vcontrol v-if=aTicket type='date' id=vendorOpened form='editTicket' :value='aTicket.vendorOpened' v-model='aTicket.vendorOpened' name='vendorOpened'  label='Opened:'  class=col-md-3 >
+				<vcontrol v-if=aTicket type='date' id=vendorOpened form='editTicket' :value='aTicket.vendorOpened' v-model='aTicket.vendorOpened' name='vendorOpened'  label='Vendor Opened:'  class=col-md-3 >
 				</vcontrol>
 
-				<vcontrol v-if=aTicket type='date' id=vendorClosed form='editTicket'  v-model='aTicket.vendorClosed' name='vendorClosed'  label='Closed:'  class=col-md-3 >
+				<vcontrol v-if=aTicket type='date' id=vendorClosed form='editTicket'  v-model='aTicket.vendorClosed' name='vendorClosed'  label='Vendor Closed:'  class=col-md-3 >
 				</vcontrol>
 
 				<vcontrol v-if=aTicket type='select' id=priority form='editTicket' :options='prioritylist'   v-model='aTicket.priority' name='priority'  label='Priority: ' placeholder='priority' Select class=col-md-2>
@@ -140,10 +140,10 @@
 
 			@if ( Auth::user()->isResolver )
 			<!-- <vcontrol type='button' class='col-md-2 '  v-on:click="cancelTicket()" >Cancel ticket</vcontrol>  -->
-			<vcontrol type='button' class='col-md-2' v-on:click="closqticket()">Close ticket</vcontrol> 
-			<vcontrol type='select' id=rootCause form='editTicket' :options='rootcauselist' :value='aTicket.rootCause_id' v-model='aTicket.rootCause_id' wrapperstyle='padding-right:2px ; padding-left:2px;' name='rootCause_id'  label='Root Cause:'  :allowclear='true' placeholder='Root Cause' class=col-md-2>
+			<vcontrol type='button' class='col-md-2' v-on:click="closeTicket()">Close ticket</vcontrol> 
+<!-- 			<vcontrol type='select' id=rootCause form='editTicket' :options='rootcauselist' :value='aTicket.rootCause_id' v-model='aTicket.rootCause_id' wrapperstyle='padding-right:2px ; padding-left:2px;' name='rootCause_id'  label='Root Cause:'  :allowclear='true' placeholder='Root Cause' class=col-md-2>
 			</vcontrol>
-			<input type=hidden id=onBehalfOf_uid name=onBehalfOf_uid v-model='aTicket.onBehalfOf_uid'>
+ -->			<input type=hidden id=onBehalfOf_uid name=onBehalfOf_uid v-model='aTicket.onBehalfOf_uid'>
 			<vcontrol type='submit' class='col-md-2 ' label='Ενημέρωση'></vcontrol>
 			@else 
 
@@ -202,14 +202,5 @@
 
 
 	@push('scripts')
-
-<script type="text/javascript">
-	
-	function closqticket(e){
-		console.log(e);
-		alert('close');
-	}
-
-</script>
 
 	@endpush

@@ -26,6 +26,7 @@ class AddTicketTitleField extends Migration
     public function down()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->dropColumn('title',255); });
+            // $table->dropColumn('title',255); 
+        });
     }
 }

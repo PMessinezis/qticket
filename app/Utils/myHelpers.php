@@ -3,7 +3,7 @@
 
 
 function ldapcheckfixdates($v){
-    if (is_numeric($v) and  strlen($v)>12 ) {
+    if (is_numeric($v) and  strlen($v)>13 ) {
         $win_secs = (int)($v / 10000000);
         $unix_timestamp = (int)($win_secs - 11644473600);
         $v= date('d M, Y H:m:s A T', $unix_timestamp);
@@ -19,10 +19,9 @@ function array_map_assoc($array){
   return $r;
 }
 
-function ldapinfo($uid){
-    $ldapinfo=collect([]);
+function ldapQuery($ldap_base, $ldap_filter, $ldap_fields){
+    $ldapinfoR=[];
     if (function_exists('ldap_connect')) {
-        $auser=$uid;
         $ldap=ldap_connect(config('qticket.LDAP_DOMAIN'));
         ldap_set_option ($ldap, LDAP_OPT_REFERRALS, 0);
         ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -30,7 +29,119 @@ function ldapinfo($uid){
         $decrypted = Crypt::decryptString($encrypted);
         $ldapbind = ldap_bind($ldap, config('qticket.LDAP_USER'), $decrypted);
         if ($ldapbind) {                 
-           $ldapFilter="(&(objectCategory=person)(objectClass=user)(sAMAccountName=$auser))" ;
+           $res=ldap_search($ldap,$ldap_base,$ldap_filter, $ldap_fields,0,0);
+           $entries=ldap_get_entries($ldap,$res);
+           // dd($entries);
+           $c=0;
+           for ($i=0 ; $i < $entries["count"] ; $i++) {
+                $r=$entries[$i];
+                if ( count($ldap_fields) >1 ) {
+                    $rec=[];
+                    foreach($ldap_fields as $f) {
+                        if (isset($r[$f])) {
+                            $fvres=$r[$f];
+                            // echo $f . ' = ' . $fvres[0] .  PHP_EOL ;
+                            $rec[$f]= $fvres[0];
+                        }
+                    }
+                    $rec['dn']= $r['dn'];
+                    $ldapinfoR[]=$rec;
+
+                } else {
+                    $attrV=$r[$ldap_fields[0]];
+                    $ldapinfoR[]=$attrV[0];
+                }
+           }
+        }   
+    }     
+    return $ldapinfoR;
+}
+
+
+function getQQUsers(){
+    $base='OU=QQuant Users,DC=qualco,DC=int';
+    $filter="(&(objectCategory=person)(objectClass=user)(samaccountname=*))";
+    $fields=array('samaccountname');
+    return ldapQuery($base,$filter,$fields);
+}
+
+
+function checkUser($u){
+    $sn=$u['sn'] ?? '';
+    $dn=$u['dn'];
+    $m=$u['mail'] ?? '' ;
+    $uid=$u['samaccountname'] ;
+    $flags=$u['useraccountcontrol'];
+    if ( ! ( $flags & 2 )) {
+        if ( $sn!= '' && strpos($m, 'qquant.gr')>0 ) {
+            $auser=App\User::find($uid);
+            if (! $auser ) {
+                App\User::fromLDAP($uid);
+            }
+        } else if ($sn!= '') {
+            $M=App\User::where('lastname','=',$sn)->get();
+            foreach($M as $auser) {
+                $auser->refreshFromLDAP();
+                $buser=App\User::find($uid);
+                if (! $buser ) {
+                    App\User::fromLDAP($uid);
+                }
+            }
+        }
+    } else {
+        echo $uid . ' is disabled ' . $u['dn'] . PHP_EOL ;
+    }
+}
+
+function checkForQQUsers(){
+    $base='DC=qualco,DC=int';
+    $accounts=[];
+    foreach(range('a','z') as $L){
+        $filter="(&(objectCategory=person)(objectClass=user)(samaccountname=$L*))";
+        $fields=array('samaccountname', 'sn' , 'mail', 'useraccountcontrol');
+        $a=ldapQuery($base,$filter,$fields);
+        foreach ($a as $u) {
+            checkUser($u);
+        }
+    }
+}
+
+function findUsersOutsideQQou(){
+    $users=App\User::all();
+    $base='DC=qualco,DC=int';
+    $fields=array('samaccountname', 'sn' , 'mail', 'useraccountcontrol');
+    foreach ($users as $u){
+        $uid=$u->uid;
+        $filter="(&(objectCategory=person)(objectClass=user)(samaccountname=$uid))";
+        $adu=ldapQuery($base,$filter,$fields); 
+        if (isset($adu[0])){
+            $ou=$adu[0]['dn'];
+            if ( ! stripos($ou, 'qquant') ) {
+                echo $uid .  ' in ' . $ou . PHP_EOL;
+            }
+        }
+    }
+}
+
+function addRefreshQQUsers(){
+    $QQ=getQQUsers();
+    foreach ($QQ as $uid){
+        echo $uid . PHP_EOL ;
+        App\User::fromLDAP($uid);
+    }
+}
+
+function ldapinfoByAttr($attrN, $attrV){
+    $ldapinfo=collect([]);
+    if (function_exists('ldap_connect')) {
+        $ldap=ldap_connect(config('qticket.LDAP_DOMAIN'));
+        ldap_set_option ($ldap, LDAP_OPT_REFERRALS, 0);
+        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+        $encrypted= config('qticket.LDAP_PASSWORD');
+        $decrypted = Crypt::decryptString($encrypted);
+        $ldapbind = ldap_bind($ldap, config('qticket.LDAP_USER'), $decrypted);
+        if ($ldapbind) {                 
+           $ldapFilter="(&(objectCategory=person)(objectClass=user)($attrN=$attrV))" ;
            $fields=array("*");
            $res=ldap_search($ldap,config('qticket.LDAP_ROOT'),$ldapFilter, $fields);
            $entries=ldap_get_entries($ldap,$res);
@@ -62,6 +173,10 @@ function ldapinfo($uid){
         }   
     }     
     return $ldapinfo;
+}
+
+function ldapinfo($uid){
+    return ldapinfoByAttr('sAMAccountName',$uid) ;
 }
 
 
@@ -274,5 +389,6 @@ function getStaticData(){
     
      ])
     ;
+    // dd($res);
     return $res ;
   }

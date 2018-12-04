@@ -25,9 +25,10 @@ class ResolverController extends CrudController
                    'type' => 'select2',
                    'name' => 'user_uid', // the db column for the foreign key
                    'entity' => 'user', // the method that defines the relationship in your Model
-                   'attribute' => 'name', // foreign key attribute that is shown to user
+                   'attribute' => 'listname', // foreign key attribute that is shown to user
                    'model' => "App\User" ,// foreign key model
-                   'model_key' => "uid" // foreign key model key
+                   'model_key' => "uid", // foreign key model key
+                   'orderable' => true,
                   ],
                   [       // Select2Multiple = n-n relationship (with pivot table)
                     'label' => "Groups",
@@ -47,6 +48,7 @@ class ResolverController extends CrudController
                 ];
 
        $this->crud->addFields($fields);
+
 
 
         $columns=[ 
@@ -73,6 +75,9 @@ class ResolverController extends CrudController
 
 
        $this->crud->setColumns($columns);
+
+       $this->crud->query = $this->crud->query->with(['user' => function ($query) {
+          $query->orderBy('lastname', 'asc');  }]);
     
     }
 

@@ -24,35 +24,28 @@ class SSO
 
         $auser=''; 
         if (isset($_SERVER['REMOTE_USER'])) {
+            // dd($_SERVER['REMOTE_USER']);
             $domuser=$_SERVER['REMOTE_USER'];
             $domuserparts=explode('\\', $domuser);
             $auser=$domuserparts[1];
             $user = User::where('uid',$auser)-> first();
         } 
         if ( ! User::all()->count() ) {
-            $auser='root';
+            if ($auser=='') {
+                $auser=  'root';
+            }
         }
-        if ( (User::all()->count()==1) && (User::find('root')->uid=='root') ) {
-            $auser='root';
+
+        if ( (User::all()->count()==1) && (User::find($auser)->uid==$auser) ) {
+            # $auser='root';
             $user = User::where('uid',$auser)->first();
         }
         if (! isset($user) && isset($auser) && $auser!='') {
             if ( ! User::all()->count() ) {
-                $user=new User;
-                $user->uid=$auser;
-                $user->firstname=$auser;
-                $user->lastname='root';
-                $user->save();
+                $user=User::fromLDAP($auser);
             } else {
                 try {
-                    $ld=ldapinfo($auser);
-                    $user=new User;
-                    $user->uid=$auser;
-                    $user->firstname=$ld['givenname'];
-                    $user->lastname=$ld['sn'];
-                    $user->email=$ld['mail'];
-                    $user->isTempEntry=true;
-                    $user->save();
+                    $user=User::fromLDAP($auser);
                 }
                 catch (\Exception $e) {
                     $user=null;

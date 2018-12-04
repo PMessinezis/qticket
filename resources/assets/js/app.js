@@ -554,6 +554,11 @@ const App = new Vue({
             var resolverslistmap=function(rec, index, arr){ return {id: rec.id , text : rec.listname  }};
             var myMapActiveOnly=function(rec, index, arr){ return rec.isActive ? {id: rec.id , text : rec.name  } : null }; // all the rest
             var myMap=function(rec, index, arr){ return {id: rec.id , text : rec.name  }}; // all the rest
+            var SortByText=function(a, b){
+                  var aName = a.text;
+                  var bName = b.text; 
+                  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+                }
             var retryWait=3000;
 
             me.retriesCount=me.retriesCount+1;
@@ -594,6 +599,7 @@ const App = new Vue({
                 me.$set(me,'showGroupsList',g); 
 
                 var r=SD.resolvers.map(resolverslistmap);
+                r.sort(SortByText);
                 me.$set(me,'resolverlist',r); 
 
                 var v=SD.vendors.map(myMap);
@@ -686,9 +692,10 @@ const App = new Vue({
 
         userDetails(user) {
             var me=this;
-            return  '<div> <b>'+user.name+'</b> - ' + '<a href="' + me.mailTo(user) +'" >' +user.email + '</a></div>' + 
-                    '<div> phones : ' + user.phone1+ '  - ' + user.phone2 + '</div>'+
-                    '<div> ' + user.tmhma + ' / ' + user.topothesia + '</div>';
+            return '<div> <b>' + user.description + '</b> ' + '<a href="' + me.mailTo(user) + '" >' + user.email + '</a></div>' +  
+                   '<div> ' + user.title + ' / ' + user.topothesia + '</div>' + 
+                   '<div> phones : ' + user.phone1 + ' , ' + user.phone2 + '</div>' ;
+
         },
 
         showNewTicket(){
@@ -785,13 +792,13 @@ const App = new Vue({
             } 
         },
 
-        closqticket(){
+        closeTicket(){
             if (this.user.isResolver && this.aTicket.rootCause_id <1 ) {
-                 this.showUserMessage('Need to specify Root Cause','bottom', 'right');
+                 // this.showUserMessage('Need to specify Root Cause','bottom', 'right');
                  if ( this.newComment=='' ) {
                     this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο', 'bottom','left');
+                    return;
                  }
-                 return;
             }
             if (this.user.isResolver &&  this.newComment=='' ) {
                 this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο','bottom', 'right');

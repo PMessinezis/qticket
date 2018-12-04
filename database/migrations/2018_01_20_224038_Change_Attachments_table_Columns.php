@@ -38,11 +38,11 @@ class ChangeAttachmentsTableColumns extends Migration
     public function down()
     {
         Schema::table('attachments', function (Blueprint $table) {
-            $table->dropColumn('originalName');
-            $table->dropColumn('filePath');
-            $table->dropColumn('fileExt');
-            $table->dropColumn('mimeType');
-            $table->dropColumn('size');
+            // $table->dropColumn('originalName');
+            // $table->dropColumn('filePath');
+            // $table->dropColumn('fileExt');
+            // $table->dropColumn('mimeType');
+            // $table->dropColumn('size');
         });
     }
 }

@@ -22,6 +22,12 @@ class Ticket extends Model
     protected $appends=['openedOn', 'statusText' , 'onBehalfOfName', 'assignedGroupName', 'refid' , 'lastUpdate', 'vendorOpened', 'vendorClosed'];
     public static $snakeAttributes = false;
     public $assignedGroup_id_Changed = false;
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
 
 
     public function source()

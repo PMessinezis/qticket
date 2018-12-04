@@ -28696,6 +28696,11 @@ var App = new Vue({
             var myMap = function myMap(rec, index, arr) {
                 return { id: rec.id, text: rec.name };
             }; // all the rest
+            var SortByText = function SortByText(a, b) {
+                var aName = a.text;
+                var bName = b.text;
+                return aName < bName ? -1 : aName > bName ? 1 : 0;
+            };
             var retryWait = 3000;
 
             me.retriesCount = me.retriesCount + 1;
@@ -28735,6 +28740,7 @@ var App = new Vue({
                 me.$set(me, 'showGroupsList', g);
 
                 var r = SD.resolvers.map(resolverslistmap);
+                r.sort(SortByText);
                 me.$set(me, 'resolverlist', r);
 
                 var v = SD.vendors.map(myMap);
@@ -28828,7 +28834,7 @@ var App = new Vue({
         },
         userDetails: function userDetails(user) {
             var me = this;
-            return '<div> <b>' + user.name + '</b> - ' + '<a href="' + me.mailTo(user) + '" >' + user.email + '</a></div>' + '<div> phones : ' + user.phone1 + '  - ' + user.phone2 + '</div>' + '<div> ' + user.tmhma + ' / ' + user.topothesia + '</div>';
+            return '<div> <b>' + user.description + '</b> ' + '<a href="' + me.mailTo(user) + '" >' + user.email + '</a></div>' + '<div> ' + user.title + ' / ' + user.topothesia + '</div>' + '<div> phones : ' + user.phone1 + ' , ' + user.phone2 + '</div>';
         },
         showNewTicket: function showNewTicket() {
             this.newTicket = true;
@@ -28927,13 +28933,13 @@ var App = new Vue({
                 Vue.nextTick(me.getTickets);
             }
         },
-        closqticket: function closqticket() {
+        closeTicket: function closeTicket() {
             if (this.user.isResolver && this.aTicket.rootCause_id < 1) {
-                this.showUserMessage('Need to specify Root Cause', 'bottom', 'right');
+                // this.showUserMessage('Need to specify Root Cause','bottom', 'right');
                 if (this.newComment == '') {
                     this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο', 'bottom', 'left');
+                    return;
                 }
-                return;
             }
             if (this.user.isResolver && this.newComment == '') {
                 this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο', 'bottom', 'right');
@@ -50492,7 +50498,7 @@ var content = __webpack_require__(171);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(7)("a20345de", content, false, {});
+var update = __webpack_require__(7)("28b8e171", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -50969,7 +50975,7 @@ var content = __webpack_require__(178);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(7)("0a2c7c01", content, false, {});
+var update = __webpack_require__(7)("01512f3e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -51793,7 +51799,7 @@ var content = __webpack_require__(183);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(7)("0b6591de", content, false, {});
+var update = __webpack_require__(7)("7407bb71", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
