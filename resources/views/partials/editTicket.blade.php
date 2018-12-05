@@ -29,12 +29,8 @@
 			</span>
 
 			<span v-if='user.isResolver && aTicket.clientInfo' class=' col-md-3 pull-right' style='font-size:0.9em ; text-align:right ; padding-right:0px;'> @{{ aTicket.clientInfo }}</span>
-			@if ( ! Auth::user()->isResolver )
-				<vcontrol type='button' class='col-md-2 pull-right' style='color:blue; position: absolute; top:-10px; right:0px'  v-on:click="closeTicket()" >&nbsp Close ticket </vcontrol> 
-				<vcontrol type='button' class='col-md-2 pull-right' style='color:red; position: absolute; top:30px; right:0px'  v-on:click="cancelTicket()" >Cancel ticket</vcontrol> 
-			@else	
-				<vcontrol type='button' class='col-md-2 pull-right' style='color:red; position: absolute; top:10px; right:0px'  v-on:click="cancelTicket()" >Cancel ticket</vcontrol> 
-			@endif
+				<vcontrol type='button' class='col-md-2 pull-right' style='color:blue; position: absolute; right : 10%'  v-on:click="closeTicket()" >Close ticket </vcontrol> 
+				<vcontrol type='button' class='col-md-2 pull-right' style='color:red; position: absolute ; right:-12px'  v-on:click="cancelTicket()" >Cancel ticket</vcontrol> 
 			<span class=clearfix ></span>
 			@if (  Auth::user()->isAdmin() )
 			<div v-show='editOnBehalfOf'>
@@ -140,11 +136,11 @@
 
 			@if ( Auth::user()->isResolver )
 			<!-- <vcontrol type='button' class='col-md-2 '  v-on:click="cancelTicket()" >Cancel ticket</vcontrol>  -->
-			<vcontrol type='button' class='col-md-2' v-on:click="closeTicket()">Close ticket</vcontrol> 
+			<!-- <vcontrol type='button' class='col-md-2' v-on:click="closeTicket()">Close ticket</vcontrol>  -->
 <!-- 			<vcontrol type='select' id=rootCause form='editTicket' :options='rootcauselist' :value='aTicket.rootCause_id' v-model='aTicket.rootCause_id' wrapperstyle='padding-right:2px ; padding-left:2px;' name='rootCause_id'  label='Root Cause:'  :allowclear='true' placeholder='Root Cause' class=col-md-2>
 			</vcontrol>
  -->			<input type=hidden id=onBehalfOf_uid name=onBehalfOf_uid v-model='aTicket.onBehalfOf_uid'>
-			<vcontrol type='submit' class='col-md-2 ' label='Ενημέρωση'></vcontrol>
+			<vcontrol type='submit' class='col-md-2 pull-right' label='Ενημέρωση'></vcontrol>
 			@else 
 
 			<input type=hidden name=status_id  v-model='aTicket.status_id'>

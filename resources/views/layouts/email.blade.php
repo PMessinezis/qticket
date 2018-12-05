@@ -13,9 +13,9 @@ QUEUE_DRIVER=database
 MAIL_DRIVER=smtp
 MAIL_HOST=smtp.office365.com
 MAIL_PORT=587
-MAIL_FROM_ADDRESS=qticket@pqh.gr
+MAIL_FROM_ADDRESS=xxxxx
 MAIL_FROM_NAME=qticket
-MAIL_USERNAME=qticket@pqh.gr
+MAIL_USERNAME=xxxxxx
 MAIL_PASSWORD= xxxxxxxxxxxxxxxx 
 MAIL_ENCRYPTION=tls
 

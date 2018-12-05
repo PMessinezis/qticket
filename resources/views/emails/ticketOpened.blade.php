@@ -53,13 +53,9 @@ span {
 Αυτό είναι ένα αυτοματοποιημένο μήνυμα. Μην απαντάτε σε αυτό το e-mail.
 </p>
 <p>
-Με εκτίμηση,
 <br>
-PQH Technology Helpdesk <br>
-email: <a href="mailto:{{ $helpdeskEmail }}?subject=Ticket {{ $ticket->refid }} : {{ $ticket->title  }}" > {{ $helpdeskEmail }}</a>
-
-
-
+QTicket system
+<br>
 </p>
 
 </body>
