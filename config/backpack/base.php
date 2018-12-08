@@ -85,5 +85,5 @@ return [
 
     // The password reset configuration for Backpack.
     // If null, the config.auth.defaults.passwords value will be used.
-    'passwords' => 'backpack',
+    'passwords' => '---------------',
 ];

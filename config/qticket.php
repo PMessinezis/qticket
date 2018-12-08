@@ -4,6 +4,7 @@ return [
 
 
     'helpdeskEmail' => env('qticket_Helpdesk_eMail', 'helpdeskquant@quant.gr'),
+    'aliveEmail' => env('qticket_Alive_eMail', 'helpdeskquant@quant.gr'),
     // config('qticket.helpdeskEmail')
 
     'reviewers' => env('qticket_ReviewersGroup', 'IT_Reviewers'),

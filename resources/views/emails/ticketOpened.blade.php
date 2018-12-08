@@ -2,8 +2,8 @@
 <head>
 <style>
 div , p,  body , span {
-	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-	font-size: 14px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif; 
+	font-size: 16px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 400;
@@ -13,8 +13,8 @@ div , p,  body , span {
 
 span {
 	color:#07148E;
-	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-	font-size: 14px;
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif; 
+	font-size: 16px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 400;
