@@ -110,9 +110,13 @@ class User extends Authenticatable
             $this->employeeid=( $ld['employeeid'] ?? '' );
             $this->title=( $ld['title'] ?? '' );
             $this->description=( $ld['description'] ?? '' );
+            if ($this->description=='') {
+                $this->description=( $ld['displayname'] ?? '' );
+            }
             $this->email=( $ld['mail'] ?? '' );        
             $this->phone1=( $ld['telephonenumber'] ?? '' );  
             $this->phone2=( $ld['mobile'] ?? '' );
+            $this->tmhma=( $ld['department'] ?? '' );
             $adr= $ld['streetaddress'] ?? '' ;
             $city= $ld['l'] ?? '' ;
             if ($adr != '' && $city != '') $adr=$adr . ', ';
