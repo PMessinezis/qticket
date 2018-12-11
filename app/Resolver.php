@@ -77,13 +77,17 @@ class Resolver extends Model
 
 
     public function getLastnameAttribute(){
-        return User::find($this->user_uid)->lastname;
+        $u=User::find($this->user_uid);
+        return $u->lastname ;
     }
 
  
     public function getListnameAttribute(){
         $u= User::find($this->user_uid);
-        return $u->fullname ;
+        $l=$u->description ?? '';
+        if ($l=='') { $l=$u->fullname ?? '' ; }
+        if ($l=='') { $l=$u->uid ?? '' ; }
+        return $l;
     }
 
     public function getFullnameAttribute(){
