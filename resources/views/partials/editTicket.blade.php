@@ -82,17 +82,18 @@
 			<template v-show=aTicket class=col-md-12>
 			 	<div class=clearfix style='margin-top:1em;'> </div>
 				
-				<vcontrol v-if=aTicket type='select' id=category form='editTicket' :options='catlist'   :value='aTicket.category_id' v-model='aTicket.category_id' name='category_id'  label='Category: '  placeholder='category' Select class=col-md-3>
-				</vcontrol>
-
-
 				<vcontrol v-if=aTicket type='select' id=status form='editTicket' :options='statuslist'   v-model='aTicket.status_id' name='status_id'  label='Status: '  placeholder='status' Select class=col-md-3>
 				</vcontrol>
 
-				<vcontrol v-if=aTicket type='select' id=group form='editTicket' :options='grouplist'    v-model='aTicket.assignedGroup_id' name='assignedGroup_id'  label='Assigned Group: '  placeholder='group'  class=col-md-3 >
+				<vcontrol v-if=aTicket type='select' id=category form='editTicket' :options='catlist'   :value='aTicket.category_id' v-model='aTicket.category_id' name='category_id'  label='Category: '  placeholder='category' Select class=col-md-3>
 				</vcontrol>
-				
-				<vcontrol  type='select' form='newTicket' :options='resolverlist' v-model='aTicket.assignedResolver_id' class='col-md-3 ' :allowclear='true'  name='assignedResolver_id' label='Assigned Resolver:' placeholder='Resolver' >
+
+				<vcontrol v-if=aTicket type='select' id=subcategory form='editTicket' :options='subcatlist'   :value='aTicket.subcategory_id' v-model='aTicket.subcategory_id' name='subcategory_id'  label='SubCategory: '  placeholder='subcategory' Select class=col-md-3>
+				</vcontrol>
+
+
+
+				<vcontrol v-if=aTicket type='select' id=priority form='editTicket' :options='prioritylist'   v-model='aTicket.priority' name='priority'  label='Priority: ' placeholder='priority' Select class=col-md-2>
 				</vcontrol>
 
 				<div class="clearfix"></div>				
@@ -110,12 +111,17 @@
 				<vcontrol v-if=aTicket type='date' id=vendorClosed form='editTicket'  v-model='aTicket.vendorClosed' name='vendorClosed'  label='Vendor Closed:'  class=col-md-3 >
 				</vcontrol>
 
-				<vcontrol v-if=aTicket type='select' id=priority form='editTicket' :options='prioritylist'   v-model='aTicket.priority' name='priority'  label='Priority: ' placeholder='priority' Select class=col-md-2>
-				</vcontrol>
 
-  				
-				<div class="clearfix"></div>
-  				
+  				<div class="clearfix"></div>
+
+				<vcontrol v-if=aTicket type='select' id=group form='editTicket' :options='grouplist'    v-model='aTicket.assignedGroup_id' name='assignedGroup_id'  label='Assigned Group: '  placeholder='group'  class=col-md-4 >
+				</vcontrol>
+				
+				<vcontrol  type='select' form='newTicket' :options='resolverlist' v-model='aTicket.assignedResolver_id'  :allowclear='true'  name='assignedResolver_id' label='Assigned Resolver:' placeholder='Resolver' class='col-md-4 ' >
+				</vcontrol>
+  								
+  				<div class="clearfix"></div>
+
 <!--   				<vcontrol type='text'   class='col-md-5' id=resolution form='editTicket' :allowclear='true'  :value='aTicket.resolution' v-model='aTicket.resolution' name='resolution'  label='Resolution:' ></vcontrol>
  -->
 

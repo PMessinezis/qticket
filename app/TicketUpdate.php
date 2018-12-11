@@ -18,6 +18,7 @@ class TicketUpdate extends Model
                     'status_id' => [ 'field'  => 'status_id',   'label' => 'Status',       'cast' => 'int'    , 'model' => 'App\Status', 'showAs' => 'name'],
                     'vendorOpened' => [ 'field'  => 'vendorOpened' , 'label' => 'Date Vendor ticket opened',     'cast' => 'date']  ,
                     'category_id' => [ 'field'  => 'category_id',   'label' => 'Category',     'cast' => 'int'    , 'model' => 'App\Category', 'showAs' => 'name'],
+                    'subcategory_id' => [ 'field'  => 'subcategory_id',   'label' => 'Sub-Category',     'cast' => 'int'    , 'model' => 'App\Subcategory', 'showAs' => 'name'],
                     'priority' => [ 'field'  => 'priority'],
                     'assignedVendor_id' => [ 'field'  => 'assignedVendor_id', 'label' => 'Vendor', 'cast' => 'int'    , 'model' => 'App\Vendor', 'showAs' => 'name'],
                     'onBehalfOf_uid' => [ 'field' => 'onBehalfOf_uid' , 'label' => 'on behalf of' , 'model' => 'App\User', 'showAs' => 'name' ] , 

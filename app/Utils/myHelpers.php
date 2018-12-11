@@ -380,6 +380,7 @@ function getStaticData(){
      
     'user'=> $u,  
     'categories'=>App\Category::all(),
+    'subcategories'=>App\Subcategory::all(),
     'statuses'=>App\Status::all(),
     'groups'=>App\Group::where("isActive",true)->orderBy("name")->get(),
     'resolvers'=>App\Resolver::where("isActive", true)->with('user')->get(),

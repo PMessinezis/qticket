@@ -80,9 +80,12 @@ const qticket =  {
         onbehalfofuid :  '',
         isResolver :  false,
         categories : [],
+        subcategories : [],
         catlist : [],
+        subcatlist : [],
         catlistActive : [],
         category : null,
+        subcategory : null,
         prioritylist: ['Normal', 'High'],
         users: [],
         userslist:[],
@@ -96,6 +99,7 @@ const qticket =  {
         showGroupsList:[],
         showGroup:null,
         showCategory:null,
+        showSubcategory:null,
         showStatusList: [ ] ,
         showStatus:'',
         resolvers:[],
@@ -179,6 +183,11 @@ const App = new Vue({
         },
 
         showCategory(n,o) {
+            this.lastUpdatedTime=null;
+            this.getTickets();
+        },
+
+        showSubcategory(n,o) {
             this.lastUpdatedTime=null;
             this.getTickets();
         },
@@ -505,14 +514,15 @@ const App = new Vue({
                     me.updateListTabLabel();
             };
 
-            if (me.lastUpdatedTime && (! me.showStatus) && (! me.showGroup) && (! me.showCategory) ) {
+            if (me.lastUpdatedTime && (! me.showStatus) && (! me.showGroup) && (! me.showCategory) && (! me.showSubcategory) ) {
                 axios.get( myURL('/json/tickets'), {params: {after:me.lastUpdatedTime , currentid: me.aTicket.id } }).then(OK_SOME);
             } else {
                 var config={};
-                if (me.showStatus || me.showGroup  || me.showCategory || me.keywords || me.preload_ticket_id>0 ) {
+                if (me.showStatus || me.showGroup  || me.showCategory || me.showSubcategory || me.keywords || me.preload_ticket_id>0 ) {
                     var params = {};
                     if (me.showStatus) params.status=me.showStatus;
                     if (me.showCategory) params.category=parseInt(me.showCategory);
+                    if (me.showSubcategory) params.subcategory=parseInt(me.showSubcategory);
                     if (me.showGroup)  { 
                         if (Array.isArray(me.showGroup)) {
                             params.group=me.showGroup;
@@ -578,6 +588,11 @@ const App = new Vue({
                 var c=me.categories.map(myMap);
                 me.$set(me,'catlistActive',ca); 
                 me.$set(me,'catlist',c); 
+
+
+                me.subcategories=SD.subcategories; 
+                var sc=me.subcategories.map(myMap);
+                me.$set(me,'subcatlist',sc); 
 
                 me.statuses=SD.statuses;
                 me.showStatusList.unshift({ id:'statusall' , text: 'Any Status'}); 

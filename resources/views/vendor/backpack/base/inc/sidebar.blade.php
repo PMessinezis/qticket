@@ -27,7 +27,7 @@
           <li><a href="{{ backpack_url('status') }}"> <span>Ticket Statuses</span></a></li>
           <li><a href="{{ backpack_url('type') }}"> <span>Ticket Category Types</span></a></li>
           <li><a href="{{ backpack_url('category') }}"> <span>Ticket Categories</span></a></li>
-          <!-- <li><a href="{{ backpack_url('subcategory') }}"> <span>Ticket SubCategories</span></a></li> -->
+          <li><a href="{{ backpack_url('subcategory') }}"> <span>Ticket SubCategories</span></a></li>
           <li><a href="{{ backpack_url('rootcause') }}"> <span>Ticket Root Causes</span></a></li>
           <li><a href="{{ backpack_url('vendor') }}"> <span>Vendors</span></a></li>
           <li><a href="{{ backpack_url('department') }}"> <span>Resolving Departments</span></a></li>

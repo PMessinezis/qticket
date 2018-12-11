@@ -108,6 +108,13 @@ class TicketController extends CrudController
       $catwhere = '  AND ( category_id=' . $category . ' ) ';
     }
 
+
+    $subcategory=$request->input('subcategory');
+    $subcatwhere ='';
+    if ($subcategory) {
+      $subcatwhere = '  AND ( subcategory_id=' . $subcategory . ' ) ';
+    }
+
     $group=$request->input('group');
     if ($group && $me->isResolver ) {
       if (is_array($group) ) {
@@ -141,7 +148,7 @@ class TicketController extends CrudController
     }
 
 
-    $whereRaw="  $usersWhere " .  ($statusWhere ? (' AND ' . $statusWhere) : ' ')  . $catwhere ;
+    $whereRaw="  $usersWhere " .  ($statusWhere ? (' AND ' . $statusWhere) : ' ')  . $catwhere . $subcatwhere ;
 
     if (isset($after) && $after) {
         $after=new Carbon($after);
@@ -174,7 +181,7 @@ class TicketController extends CrudController
 
 
   public function ticketGet(Ticket $ticket){
-    $ticket->load('requestedBy', 'onBehalfOf', 'assignedGroup', 'assignedResolver', 'category', 'status', 'assignedVendor' , 'rootCause',
+    $ticket->load('requestedBy', 'onBehalfOf', 'assignedGroup', 'assignedResolver', 'category', 'subcategory','status', 'assignedVendor' , 'rootCause',
      'updates.updatedBy',  'updates.attachment', 'attachments.uploadedByUser');
     return $ticket;
   }

@@ -19,17 +19,20 @@
 					  <template v-for='(t,i) in listTabs'>
 					  	<li v-if='t.label' :class="t.active ? 'active' :''" @click='listTabClicked(i)'><a href="#" v-html="t.label"></a></li>
 					  </template>
-					  <span id=queryParams class='col-md-7 pull-right'>
+					  <span id=queryParams class='col-md-9 pull-right'>
 
 					  	  <vcontrol v-if='user && showStatusList.length' type='select' :labelinline='true' v-model='showStatus' style='display:inline ; padding-right: 2px' 
-					  	  			:options='showStatusList' :allowclear='true' placeholder='Status' class=col-md-3 >
+					  	  			:options='showStatusList' :allowclear='true' placeholder='Status' class=col-md-2 >
 					  	  </vcontrol>
 
 					  	  @if(Auth::User()->isResolver)
 					  	  
 
 					  	  <vcontrol v-if='user && showGroupsList.length' type='select' :labelinline='true' v-model='showGroup' style='display:inline; padding-right: 2px' 
-					  	  			:options='showGroupsList'  :allowclear='true' placeholder='Group' class=col-md-3 >
+					  	  			:options='showGroupsList'  :allowclear='true' placeholder='Group' class=col-md-2 >
+					  	  </vcontrol>
+
+					  	  <vcontrol type='select' :labelinline='true' v-model='showSubcategory' style='display:inline;  padding-right: 2px'  :options='subcatlist'  :allowclear='true' placeholder='SubCategory' class=col-md-2 >
 					  	  </vcontrol>
 
 					  	  <vcontrol type='select' :labelinline='true' v-model='showCategory' style='display:inline;  padding-right: 2px'  :options='catlist'  :allowclear='true' placeholder='Category' class=col-md-3 >

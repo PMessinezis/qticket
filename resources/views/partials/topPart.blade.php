@@ -27,7 +27,7 @@
          <li> <a href=""> {{ Auth::User()->name }} </a> </li>
         @endif 
         @if(Auth::User()->isResolver)
-         <!-- <li><a href={{ myURL("export") }} style='color:#1f1d5b'> <i class="fas fa-download"> </i> Export</a></li> -->
+         <li><a href={{ myURL("export") }} style='color:#1f1d5b'> <i class="fas fa-download"> </i> Export</a></li>
         @endif 
         @if(Auth::User()->isAdmin())
          
