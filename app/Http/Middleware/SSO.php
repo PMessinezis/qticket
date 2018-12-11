@@ -35,11 +35,11 @@ class SSO
                 $auser=  'root';
             }
         }
-
         if ( (User::all()->count()==1) && (User::find($auser)->uid==$auser) ) {
             # $auser='root';
             $user = User::where('uid',$auser)->first();
         }
+ 
         if (! isset($user) && isset($auser) && $auser!='') {
             if ( ! User::all()->count() ) {
                 $user=User::fromLDAP($auser);
@@ -52,11 +52,13 @@ class SSO
                 }
             }
         }
-
         if (isset($user)) {
+        // dd($user);
             if(Auth::check() && (Auth::id()==$user->uid)){
                 
-            } else { Auth::login($user, true); }
+            } else { 
+                Auth::login($user, true); 
+            }
             $uri=$request->path();
             if (starts_with($uri,'admin/') || $uri=='admin') {
                 if ($user->isAdmin()) {

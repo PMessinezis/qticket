@@ -120,8 +120,14 @@ class User extends Authenticatable
             $adr= $ld['streetaddress'] ?? '' ;
             $city= $ld['l'] ?? '' ;
             if ($adr != '' && $city != '') $adr=$adr . ', ';
-            $this->topothesia=  $adr . $city;      
+            $this->topothesia=  $adr . $city;  
+            dd($this);
+            if ($this->firstname=='' || $this->lastname=='')  {
+                return null;
+            }
             $this->save();
+        } else {
+            return null;
         }
         return $this;
     }
@@ -134,8 +140,7 @@ class User extends Authenticatable
             $user->uid=$auser;
             $user->isTempEntry=true;
         }
-        $user->refreshFromLDAP();
-        return $user;
+        return $user->refreshFromLDAP();
     }
 
 

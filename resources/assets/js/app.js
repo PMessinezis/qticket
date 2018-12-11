@@ -545,10 +545,14 @@ const App = new Vue({
         getAlert() {
             var me=this;
             var OK=function(reply) { 
-                    if (me.alert!=reply.data && reply.data>'') {
+                    if (me.alert!=reply.data && reply.data>'' && !reply.data.startsWith('<') ) {
                         me.windowsNotify('ALERT: ', reply.data)
                     }
-                    me.alert=reply.data;
+                    if (reply.data.startsWith('<') ) {
+                        me.alert='';
+                    } else {
+                        me.alert=reply.data;
+                    }
             };
             if (! me.editAlert) {
                 axios.get( myURL('/json/alert')).then(OK);
