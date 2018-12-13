@@ -545,13 +545,14 @@ const App = new Vue({
         getAlert() {
             var me=this;
             var OK=function(reply) { 
-                    if (me.alert!=reply.data && reply.data>'' && !reply.data.startsWith('<') ) {
-                        me.windowsNotify('ALERT: ', reply.data)
+                    var rd=reply.data;
+                    if (me.alert!= rd && rd>'' && ! rd.startsWith('<') ) {
+                        me.windowsNotify('ALERT: ', rd)
                     }
-                    if (reply.data.startsWith('<') ) {
+                    if (rd.startsWith('<') ) {
                         me.alert='';
                     } else {
-                        me.alert=reply.data;
+                        me.alert=rd;
                     }
             };
             if (! me.editAlert) {
