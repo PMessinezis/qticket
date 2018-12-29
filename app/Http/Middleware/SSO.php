@@ -28,6 +28,11 @@ class SSO
             $domuser=$_SERVER['REMOTE_USER'];
             $domuserparts=explode('\\', $domuser);
             $auser=$domuserparts[1];
+
+            // if ($auser=='pmessinezis') {
+            //     $auser='pkallos';
+            // }
+
             $user = User::where('uid',$auser)-> first();
         } 
         if ( ! User::all()->count() ) {

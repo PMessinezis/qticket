@@ -9,9 +9,10 @@ use App\Ticket;
 use App\TicketUpdate;
 use App\Attachment;
 use App\Status;
+use App\User;
 use Auth;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Log;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as StoreRequest;
 use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 
@@ -115,6 +116,9 @@ class TicketController extends CrudController
       $subcatwhere = '  AND ( subcategory_id=' . $subcategory . ' ) ';
     }
 
+    $empid=$me->employeeid ;
+    $relatedUsers=User::whereRaw("employeeid='$empid' and uid<>'$me->uid'")->get();
+
     $group=$request->input('group');
     if ($group && $me->isResolver ) {
       if (is_array($group) ) {
@@ -126,6 +130,11 @@ class TicketController extends CrudController
             $usersWhere=' ( TRUE ) ';
         } else if ($group == 998 ) {
             $usersWhere=' (  assignedResolver_id = ' . $me->resolver->id  . ' ) ';
+            foreach ($relatedUsers as $key => $ruser) {
+              if ($ruser->isResolver) {
+                $usersWhere =  ' ( ' . $usersWhere .   ' or (  assignedResolver_id = ' . $ruser->resolver->id  . ' )  ) ' ;    
+              }
+            }    
         } else { 
             $usersWhere=" ( assignedGroup_id = $group ) ";
         }
@@ -134,19 +143,31 @@ class TicketController extends CrudController
 
       // Query : Where [ user / resolver related ]  AND [ status related ] AND [ after Related ]
       // if I am a resolver returned also assigned to me 
+      $relatedUsers->push($me);
+      $uw='';
+      foreach ($relatedUsers as $key => $ruser) {
+        
+        $usersWhere= ' ( ( requestedBy_uid= "' . $ruser->uid . '" )  or ( onBehalfOf_uid= "' . $ruser->uid . '") ';
 
-      $usersWhere='  ( ( requestedBy_uid= "' . $me->uid . '" )  or ( onBehalfOf_uid= "' . $me->uid . '") ';
+       
 
-      if (isset($me->resolver->id)) {
-        $myGroups=$me->resolver->groups->pluck('id');
-        $myGroups=$myGroups->implode(',');
-        $usersWhere .= ' or ( assignedResolver_id = ' . $me->resolver->id  . ' ) or  ( assignedGroup_id IN  (' . $myGroups . ') )';
+        if (isset($ruser->resolver->id)) {
+        
+          $myGroups=$ruser->resolver->groups->pluck('id');
+          $myGroups=$myGroups->implode(',');
+          $usersWhere .= '  or  ( assignedResolver_id = ' . $ruser->resolver->id  . ' ) or  ( assignedGroup_id IN  (' . $myGroups . ') )';
+        }
+
+        $usersWhere .= ' ) ';
+
+        if ( $uw =='' ) {
+          $uw=$usersWhere;
+        } else {
+          $uw=  ' ' . $uw . ' OR ' . $usersWhere . '  ';
+        }
       }
-
-      $usersWhere .= ' ) ';
-
+      $usersWhere=' ( ' . $uw . ' ) ' ;
     }
-
 
     $whereRaw="  $usersWhere " .  ($statusWhere ? (' AND ' . $statusWhere) : ' ')  . $catwhere . $subcatwhere ;
 
@@ -161,12 +182,12 @@ class TicketController extends CrudController
     }
 
     // dd($whereRaw);
+    // Log::info(' Tickets SQL query ' , [ 'sql' =>  $whereRaw ]) ;
+
     $tq=Ticket::whereRaw($whereRaw);
 
     $tq->orderBy('created_at','desc')->orderBy('id','asc');
-     // if ($me->uid=='u96484') {
-     //  dd($tq->toSql(),$tq->getBindings());
-     // };
+     
     if ($keywords) {
       return $this->ticketSearch($request); // change toreturn not raw but query - then get sql and bindings and combine to make new whereraw
         //       $sql=$tq->toSql();
