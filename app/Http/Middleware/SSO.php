@@ -29,9 +29,10 @@ class SSO
             $domuserparts=explode('\\', $domuser);
             $auser=$domuserparts[1];
 
-            // if ($auser=='pmessinezis') {
-            //     $auser='pkallos';
-            // }
+            if ($auser=='pmessinezis') {
+            // // below is to "impersonate" another user and check the behavior of the system for that user
+            //     $auser='......';
+            }
 
             $user = User::where('uid',$auser)-> first();
         } 
