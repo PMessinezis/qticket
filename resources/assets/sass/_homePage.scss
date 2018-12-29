@@ -196,20 +196,26 @@ body.loading .modal {
           tbody tr:nth-child(odd) { background-color:white}
           tbody tr:nth-child(even) {background-color:$gray}
           tbody tr:hover {
-          background-color:#FEFFBD;
+          background-color:#ffffcc ;
+          /*#FEFFBD;*/
           cursor: pointer; 
           }
 
         tr.ticketPriorityHigh > td {
-          color:#B01A1A !important;
+          color:red !important;
         }
 
+        tr[marked=true] {
+          background-color: yellow !important;
+          color: blue !important;
+        }
         tbody tr.newTicket  {
-          background-color:#ED1E36;
-          color:orange !important;
+          background-color:#e8fff6; 
+          /*#ED1E36;*/
+          /*color:orange !important;*/
           &:hover {
-             background-color:yellow !important;;
-             color:red  !important;
+             background-color:#ffffcc !important;;
+             /*color:red  !important;*/
           cursor: pointer; 
           }
         }

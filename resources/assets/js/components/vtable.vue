@@ -180,11 +180,7 @@ th.desc {
 th:hover {
   background-color: #6AF3F5;
 }
-tr[marked=true] {
-  
-  background-color: #ECFD78 !important;
-  color: blue !important;
-}
+
 /* Tooltip text */
 .ttip .tooltiptext {
     visibility: hidden;
