@@ -121,7 +121,7 @@ class User extends Authenticatable
             $city= $ld['l'] ?? '' ;
             if ($adr != '' && $city != '') $adr=$adr . ', ';
             $this->topothesia=  $adr . $city;  
-            dd($this);
+            // dd($this);
             if ($this->firstname=='' || $this->lastname=='')  {
                 return null;
             }
