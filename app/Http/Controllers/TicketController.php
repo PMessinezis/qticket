@@ -21,11 +21,16 @@ use Backpack\CRUD\app\Http\Requests\CrudRequest as UpdateRequest;
 class TicketController extends CrudController  
 {
 
-  public function setup() {
+  public function setup() { 
         $this->crud->setModel('App\Ticket');
         $this->crud->setRoute(config('backpack.base.route_prefix')  . '/ticket');
         $this->crud->setEntityNameStrings('ticket', 'tickets');
         $this->crud->setFromDb();
+        $this->crud->removeField('vendorOpenedDate', 'both');
+        $this->crud->removeField('vendorClosedDate', 'both');
+        $this->crud->removeField('openedDateTime', 'both');
+        $this->crud->removeField('closedDateTime', 'both');
+        $this->crud->removeField('lastUpdatedByResolver_at', 'both');
   }
 
   public function store(StoreRequest $request)
@@ -155,7 +160,10 @@ class TicketController extends CrudController
         
           $myGroups=$ruser->resolver->groups->pluck('id');
           $myGroups=$myGroups->implode(',');
-          $usersWhere .= '  or  ( assignedResolver_id = ' . $ruser->resolver->id  . ' ) or  ( assignedGroup_id IN  (' . $myGroups . ') )';
+          $usersWhere .= '  or  ( assignedResolver_id = ' . $ruser->resolver->id  . ' ) ';
+          if ( $myGroups ) {
+            $usersWhere .= 'or  ( assignedGroup_id IN  (' . $myGroups . ') )';
+          }
         }
 
         $usersWhere .= ' ) ';
@@ -182,7 +190,7 @@ class TicketController extends CrudController
     }
 
     // dd($whereRaw);
-    // Log::info(' Tickets SQL query ' , [ 'sql' =>  $whereRaw ]) ;
+     // Log::info(' Tickets SQL query ' , [ 'sql' =>  $whereRaw ]) ;
 
     $tq=Ticket::whereRaw($whereRaw);
 
@@ -243,7 +251,8 @@ public function handleFile($ticket, $request) {
         $a->fileExt=$file->guessExtension();
         $a->mimeType=$file->getMimeType();
         $a->size=$file->getClientSize();
-        if ($a->mimeType=='application/CDFV2-unknown' || $a->mimeType=='application/vnd.ms-outlook') {
+        \Log::info('file', [ 'fname' => $a->originalName , 'mimetype' => $a->mimeType , ]);
+        if ($a->mimeType=='application/CDFV2-unknown' || $a->mimeType=='application/vnd.ms-outlook' ||   $a->mimeType=='application/vnd.ms-office') {
           $a->mimeType=$file->getClientMimeType();
           // if (a->fileExt=='') a-1>fileExt=$file->getExtension();
           if ($a->fileExt=='') $a->fileExt=$file->getClientOriginalExtension();
@@ -312,8 +321,11 @@ public function handleFile($ticket, $request) {
       }
 
       if ($request->hasFile('file')) {
+        \Log::info('hasfile', []);
         $attachment_id=$this->handleFile($ticket, $request) ;
         $dirty=true;
+      } else {
+                \Log::info('nofile', []);
       }
 
       if ($dirty &&  ($comment || $attachment_id || count($changes) ) ) {

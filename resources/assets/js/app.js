@@ -415,16 +415,16 @@ const App = new Vue({
                 }
                 me.tickets[i].lastUpdate=me.makehuman(upd);
                 me.tickets[i].openedOn=me.makehuman(crd);
-                if (me.tickets[i].updated_at==me.tickets[i].created_at) {
+                if ( (me.tickets[i].updated_at==me.tickets[i].created_at) && (me.user.isResolver ))  {
                     me.tickets[i].isNew=true
                 } else {
                     me.tickets[i].isNew=false
                 }
                 if (me.tickets[i].lastUpdatedBy_uid==me.tickets[i].onBehalfOf_uid && me.tickets[i].onBehalfOf) {
-                    me.tickets[i].isNew =  ! me.tickets[i].onBehalfOf.isResolver;
+                    me.tickets[i].isNew =  ! me.tickets[i].onBehalfOf.isResolver && (me.user.isResolver );
                 }
                 if (me.tickets[i].lastUpdatedBy_uid==me.tickets[i].requestedBy_uid) {
-                    me.tickets[i].isNew =  (! me.tickets[i].lastUpdatedByResolver_uid);
+                    me.tickets[i].isNew =  (! me.tickets[i].lastUpdatedByResolver_uid) && me.user.isResolver ;
                 }
             }
             me.lastUpdatedTime=max;            

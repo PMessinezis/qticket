@@ -98,7 +98,7 @@
 
 				<div class="clearfix"></div>				
 
-				<vcontrol v-if=aTicket type='select' id=vendor form='editTicket' :options='vendorlist'  v-model='aTicket.assignedVendor_id' name='assignedVendor_id'  label='Vendor:'  :allowclear='true' placeholder='vendor' class=col-md-2>
+				<vcontrol v-if=aTicket type='select' id=vendor form='editTicket' :options='vendorlist'  v-model='aTicket.assignedVendor_id' name='assignedVendor_id'  label='Vendor:'  :allowclear='true' placeholder='vendor' class=col-md-3>
 				</vcontrol>
 
 				<vcontrol v-if=aTicket type='text' id=vendorRef form='editTicket' :allowclear='true'  :value='aTicket.vendorRef' v-model='aTicket.vendorRef' name='vendorRef'  label='Vendor Ref#' class=col-md-2 >

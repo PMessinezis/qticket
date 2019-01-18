@@ -174,7 +174,7 @@ body.loading .modal {
       table {
      
        width: 100%;
-       border-collapse: separate;
+       /*border-collapse: separate;*/
        border-spacing: 1px;
        color:blue;
 
@@ -182,12 +182,23 @@ body.loading .modal {
         background-color:#D4E2F9;
        }
 
-        &,  th, td {
+        &,  th > td {
           font-size:12px;
+          border-collapse: separate;
           border-bottom: 1px solid gray;
           border-top: 1px solid gray;
           border-left: none;
           border-right: none;
+        }      
+
+        &,   tr>td {
+          font-size:1em !important;
+          /*border-bottom: 1px solid #E6E6E6;*/
+          border-top: 1px solid #E6E6E6;
+          border-left: none;
+          border-right: none;
+          padding: 5px;
+          color: darkslategrey
         }
 
           tbody tr {

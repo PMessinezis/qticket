@@ -18,7 +18,7 @@
 		<div class='clearfix'></div>
 		
 
-		<vcontrol type='text' class='col-md-12 col-sm-12' name='title' v-model='title' label='Θέμα'>
+		<vcontrol type='text' class='col-md-12 col-sm-12' name='title' v-model='title' label='Θέμα *'>
 		</vcontrol>
 
 		<div class='col-md-12'></div>
