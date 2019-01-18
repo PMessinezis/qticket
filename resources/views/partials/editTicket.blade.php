@@ -81,7 +81,8 @@
 			@if ( Auth::user()->isResolver )
 			<template v-show=aTicket class=col-md-12>
 			 	<div class=clearfix style='margin-top:1em;'> </div>
-				
+				<span v-if="aTicket.attachments && aTicket.attachments.length " style=' margin-top: 20px;' class='col-md-1 pull-right'>   @{{ aTicket.attachments.length }} <i class="fas fa-paperclip" aria-hidden="true"></i> </span>
+
 				<vcontrol v-if=aTicket type='select' id=status form='editTicket' :options='statuslist'   v-model='aTicket.status_id' name='status_id'  label='Status: '  placeholder='status' Select class=col-md-3>
 				</vcontrol>
 
