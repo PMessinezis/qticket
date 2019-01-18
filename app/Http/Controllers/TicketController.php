@@ -57,6 +57,12 @@ class TicketController extends CrudController
 
       }
 
+      if (is_numeric($keyword)) {
+          Log::info($keyword . ' is numeric');
+          $id=0 + $keyword ;
+          $tq=$tq->orWhere('id',$id);
+      }
+
       $UIDS=array_column(\DB::select("select uid from users where lastname like  '" . $k . "' or email like  '" . $k . "'"),'uid');
       if (isset($UIDS) && count($UIDS)){
         $tq=$tq->orWhere(function ($query) use ($UIDS) {
