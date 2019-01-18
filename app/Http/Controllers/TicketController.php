@@ -89,8 +89,12 @@ class TicketController extends CrudController
     $terminalStatuses=Status::where('isTerminal', '1')->get()->pluck('id');
     $terminalStatuses=$terminalStatuses->implode(',');
     if ( ! isset($after) || ! $after)  {
-      $statusWhere= "  ( ( closedDateTime is NULL ) " .
-         ( $terminalStatuses ? "and ( status_id not in ( " . $terminalStatuses . " ) ) " : "" )
+      $statusWhere="";
+      if (! $me->isResolver ) {
+        $statusWhere= " ( timestampdiff(hour,closedDateTime,now())<18 ) or  " ;
+      }
+      $statusWhere= $statusWhere . "   ( ( closedDateTime is NULL ) " .
+         ( $terminalStatuses ? "and  ( status_id not in ( " . $terminalStatuses . " )  ) " : "" )
          . " ) " ;
     }
     if ($status) {
@@ -313,6 +317,9 @@ public function handleFile($ticket, $request) {
           }
       }
 
+      if ($ticket->status->isTerminal  && ! $ticket->closedDateTime )  {
+        $ticket->closedDateTime =Carbon::now(); 
+      }
 
       if ($userComment) {
           if ( $comment ) $comment .= '<br>';
