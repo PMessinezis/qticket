@@ -148,14 +148,18 @@ class Ticket extends Model
     
         $qticket='qticket@quant.gr';
         $DL=qticketReviewersEmails() ;
+        $ResolversGroupEmails=[];
         $bccAll=false;
-
+        if ($this->assignedGroup_id) {
+            $ResolversGroupEmails=groupMembersEmails($this->assignedGroup_id);
+        }
         // if ticket assigned to a group with active notifications, then inform group members too
         if ( $this->assignedGroup_id && (  ($originalAssignedGroup_id !=  $this->assignedGroup_id) || $this->assignedGroup_id_Changed) 
               && $this->assignedGroup->notifyMembers ){
-                $DL= groupMembersEmails($this->assignedGroup_id) ;
+                $DL=array_merge($DL,  $ResolversGroupEmails) ;
                 $bccAll=true;
         }
+
 // if ($user->id != 1 ) {
         if ($NEWTICKET) {
 
@@ -193,31 +197,34 @@ class Ticket extends Model
                 if ($to) {
                     $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'User update: ');
                      if ($bccAll) {
-                        Mail::to($to)->cc( [$helpdeskEmail,$this->onBehalfOf->email]  )->bcc($DL)->send($tem);
+                        Mail::to($to)->cc( [ $ResolversGroupEmails ,$this->onBehalfOf->email]  )->bcc($DL)->send($tem);
                     } else {
-                        Mail::to($to)->cc( [$helpdeskEmail,$this->onBehalfOf->email]  )->send($tem);
+                        Mail::to($to)->cc( [  $ResolversGroupEmails ,$this->onBehalfOf->email]  )->send($tem);
                     }
                 }
-            } else if ($user->isReviewer) {
-                // ticket updated by a reviewer - inform resolver
-                $to='';
-                if ( $resolverUser && ($resolverUser->uid  != $user->uid) ) {
-                    $to=trim($resolverUser->email);
-                }
-                $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket Reviewed: ');
-                if ($to) {
-                    Mail::to($to)->cc([$helpdeskEmail ,$user->email],$this->onBehalfOf->email)->bcc($DL)->send($tem);
-                } else {        
-                    Mail::to($helpdeskEmail )->cc( [$user->email,$this->onBehalfOf->email] )->bcc($DL)->send($tem);
-                } 
-            } else {  // any other update
+            } 
+            // else if ($user->isReviewer) {
+            //     // ticket updated by a reviewer - inform resolver
+            //     $to='';
+            //     if ( $resolverUser && ($resolverUser->uid  != $user->uid) ) {
+            //         $to=trim($resolverUser->email);
+            //     }
+            //     $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket Reviewed: ');
+            //     if ($to) {
+            //         Mail::to($to)->cc([$ResolversGroupEmails  ,$user->email],$this->onBehalfOf->email)->bcc($DL)->send($tem);
+            //     } else {        
+            //         Mail::to($ResolversGroupEmails  )->cc( [$user->email,$this->onBehalfOf->email] )->bcc($DL)->send($tem);
+            //     } 
+            // } 
+            else {  // any other update
                 $to=trim($this->onBehalfOf->email);
+                \Log::info("something changed - I should send an email to $to !");
                 if ($to) {
                     $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket update : ');
                     if ($bccAll) {
                         Mail::to($to)->bcc($DL)->send($tem);
                     } else {
-                        Mail::to($to)->send($tem);
+                        Mail::to($to)->bcc($DL)->send($tem);
                     }
                 } else {
                     $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket update : ');
