@@ -111,6 +111,7 @@ class Ticket extends Model
 
         if ( $this->assignedResolver_id || $this->lastUpdatedByResolver_uid ) {
             $resolverUser= $this->assignedResolver_id ? $this->assignedResolver->user : $this->lastUpdatedByResolver ;
+            // \log::info("resolver " , [ "resolver " => $resolverUser]);
         } 
         
         $userTicket =  ( $this->onBehalfOf_uid==$user->uid )  ;
@@ -152,18 +153,21 @@ class Ticket extends Model
         $bccAll=false;
         if ($this->assignedGroup_id) {
             $ResolversGroupEmails=groupMembersEmails($this->assignedGroup_id);
+            // \Log::info( " will email ", [ "emails" =>  $ResolversGroupEmails ]);
         }
         // if ticket assigned to a group with active notifications, then inform group members too
         if ( $this->assignedGroup_id && (  ($originalAssignedGroup_id !=  $this->assignedGroup_id) || $this->assignedGroup_id_Changed) 
               && $this->assignedGroup->notifyMembers ){
                 $DL=array_merge($DL,  $ResolversGroupEmails) ;
                 $bccAll=true;
+               // \Log::info( " will bcc ", [ "emails" =>  $DL ]);
+
         }
 
 // if ($user->id != 1 ) {
         if ($NEWTICKET) {
 
-
+            // \Log::info( " new ticket email ") ;
             // if not opened on my behalf , inform the one it was opened on behalf of - if he/she has email address
             if ( ($this->requestedBy_uid != $this->onBehalfOf_uid) && $this->onBehalfOf_uid ) {
               $to=trim($this->onBehalfOf->email);
@@ -176,6 +180,8 @@ class Ticket extends Model
 
 
         } else if ($TICKETCLOSED) {
+            // \Log::info( " ticket closed email ") ;
+
             $to=trim($this->onBehalfOf->email);
             if ($to) {
                 $tem=new TicketClosed($this, $user, $comment,  $update, "Ticket $this->statustext : ");
@@ -194,12 +200,20 @@ class Ticket extends Model
             if ( ( (! $user->isResolver) || $userTicket ) && $resolverUser && ($resolverUser->uid  != $user->uid) ) {
                 // ticket updated by (a) user - inform resolver - cc helpdesk - bcc reviewers, and if enabled assigned group members 
                 $to=trim($resolverUser->email);
+                // \Log::info( " ticket updated by user email " . $to) ;
                 if ($to) {
                     $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'User update: ');
                      if ($bccAll) {
+                        // \Log::info("bccall");
+                        // \Log::info( " ticket updated by user email 1 "  , [ "to" -> $to  , "resolversEmails" =>   $ResolversGroupEmails  ,  "onBehalf" => $this->onBehalfOf->email , "bcc" => $DL ] ) ;
                         Mail::to($to)->cc( [ $ResolversGroupEmails ,$this->onBehalfOf->email]  )->bcc($DL)->send($tem);
                     } else {
-                        Mail::to($to)->cc( [  $ResolversGroupEmails ,$this->onBehalfOf->email]  )->send($tem);
+                        // \Log::info("not bccall");
+                        // \Log::info( " ticket updated by user email 2 " , [ 
+                        //        "email" => $tem  
+                        // ] ) ;
+                        array_push($ResolversGroupEmails ,$this->onBehalfOf->email);
+                        Mail::to($to)->cc($ResolversGroupEmails )->send($tem);
                     }
                 }
             } 
@@ -218,7 +232,7 @@ class Ticket extends Model
             // } 
             else {  // any other update
                 $to=trim($this->onBehalfOf->email);
-                \Log::info("something changed - I should send an email to $to !");
+                // \Log::info("something changed - I should send an email to $to !");
                 if ($to) {
                     $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket update : ');
                     if ($bccAll) {
@@ -231,7 +245,7 @@ class Ticket extends Model
                     Mail::to($DL)->send($tem);
                 }
             }
-    }
+        }
     }
 
     public function getOpenedOnAttribute(){
