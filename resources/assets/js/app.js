@@ -119,6 +119,7 @@ const qticket =  {
         keywords:'',
         title:'',
         newComment:'',
+        resolversnotes:false,
         preload_ticket_id:0,
         retriesCount:0,
         Google_API_Key:"AIzaSyDXk8zuRBO-ezemIZqSk5uoP9MReobM7mM",
@@ -737,7 +738,10 @@ const App = new Vue({
                 // console.log('submitting');
                 if(reply.status=='OK') {                
                     if (reply.ticket) {
+                        me.newComment='';
+                        me.resolversnotes=false;
                         myform.find('textarea[name="newComment"]').val('');
+                        myform.find('input[type=checkbox][name="resolversnotes"]').prop('checked',false).val('');
                         myform.find('input[type=file]').val('');
                         myform.find('#showfile').html('');
                         myform.find('#paperclip').show();
@@ -775,6 +779,7 @@ const App = new Vue({
             htmlnode(myform).reset();
             myform.attr('action', myURL('/json/ticket/' + id));
             myform.find('textarea[name="newComment"]').val('');
+            myform.find('input[type=checkbox][name="resolversnotes"]').prop('checked',false).val('');
             myform.find('input[type=file]').val('');
             myform.find('#showfile').html('');
             me.selectedfile='';

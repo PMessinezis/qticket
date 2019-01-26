@@ -101,7 +101,11 @@ class TicketUpdate extends Model
             }
         }
         if ($chg) $chg .= '<br>';
-        $c= $chg . nl2br($this->comment) ;
+        if ( ($u->isResolver || !$this->resolverNote) && ($this->comment>'') ) {
+            $c= $chg . ( $this->resolverNote ? '<i style="color:blue">' : '' ) . nl2br($this->comment) . ( $this->resolverNote ? '</i>' : '' ) ;
+        } else { 
+            $c='';
+        }
         $c .= $this->attachment ?  ( $c ? '<br>' : '' ) . $this->attachment->htmlAnchor() : '' ;
         return $c;
     }

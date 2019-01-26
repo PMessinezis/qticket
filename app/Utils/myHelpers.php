@@ -393,3 +393,10 @@ function getStaticData(){
     // dd($res);
     return $res ;
   }
+
+
+  function mylog($s, $symbols=[]){
+    $me=Auth::User();
+    $myInfo =$me ? 'User: ' . $me->uid . ' | ' : '';
+    Log::info($myInfo . $s , $symbols );
+  }

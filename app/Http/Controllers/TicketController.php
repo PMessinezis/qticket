@@ -99,8 +99,8 @@ class TicketController extends CrudController
       if (! $me->isResolver ) {
         $statusWhere= " ( timestampdiff(hour,closedDateTime,now())<18 ) or  " ;
       }
-      $statusWhere= $statusWhere . "   ( ( closedDateTime is NULL ) " .
-         ( $terminalStatuses ? "and  ( status_id not in ( " . $terminalStatuses . " )  ) " : "" )
+      $statusWhere= $statusWhere . "   (  " .
+         ( $terminalStatuses ? "  ( status_id not in ( " . $terminalStatuses . " )  ) " : "" )
          . " ) " ;
     }
     if ($status) {
@@ -187,7 +187,7 @@ class TicketController extends CrudController
       $usersWhere=' ( ' . $uw . ' ) ' ;
     }
 
-    $whereRaw="  $usersWhere " .  ($statusWhere ? (' AND ' . $statusWhere) : ' ')  . $catwhere . $subcatwhere ;
+    $whereRaw="  $usersWhere  " .  ( $statusWhere ? (' AND ( ' . $statusWhere)  . ' ) ' : ' ')  . $catwhere . $subcatwhere ;
 
     if (isset($after) && $after) {
         $after=new Carbon($after);
@@ -200,7 +200,7 @@ class TicketController extends CrudController
     }
 
     // dd($whereRaw);
-     // Log::info(' Tickets SQL query ' , [ 'sql' =>  $whereRaw ]) ;
+    Log::info(' Tickets SQL query ' . $me->uid , [ 'sql' =>  $whereRaw ]) ;
 
     $tq=Ticket::whereRaw($whereRaw);
 
@@ -230,6 +230,7 @@ class TicketController extends CrudController
     $id=Status::where('name','Open')->first()->id;
     if ($id) {
       $ticket->status_id=$id;
+      $ticket->closedDateTime=null;
       $ticket->addUpdate("Ticket Re-Opened",null,null);
     }
     return $ticket;
@@ -239,6 +240,7 @@ class TicketController extends CrudController
     $id=Status::where('name','Closed')->first()->id;
     if ($id) {
       $ticket->status_id=$id;
+      $ticket->closedDateTime=Carbon::now();;
       $ticket->addUpdate("Ticket Closed",null,null);
     }
     return $ticket;
@@ -248,6 +250,7 @@ class TicketController extends CrudController
     $id=Status::where('name','Cancelled')->first()->id;
     if ($id) {
       $ticket->status_id=$id;
+      $ticket->closedDateTime=Carbon::now();;
       $ticket->addUpdate("Ticket Cancelled",null,null);
     } 
     return $ticket;
@@ -281,6 +284,8 @@ public function handleFile($ticket, $request) {
 
   public function ticketPost(Ticket $ticket, Request $request){
    
+    $me=Auth::user();
+
     $reply = (object) array();
     
     $fields2check = TicketUpdate::fields2check;
@@ -294,6 +299,7 @@ public function handleFile($ticket, $request) {
     if ($ticket){
       $comment='';
       $userComment=$request->input('newComment');
+      $justForResolvers= $me->isResolver && ( $request->input('resolversnotes') ?? false );
       $attachment_id=0;
       $dirty=false;
     
@@ -338,12 +344,12 @@ public function handleFile($ticket, $request) {
         $attachment_id=$this->handleFile($ticket, $request) ;
         $dirty=true;
       } else {
-                \Log::info('nofile', []);
+  
       }
 
       if ($dirty &&  ($comment || $attachment_id || count($changes) ) ) {
         // IMPORTANT the following call will take care of saving model !!!
-        $ticket->addUpdate($comment , $attachment_id, $changes);
+        $ticket->addUpdate($comment , $attachment_id, $changes , $justForResolvers );
         $reply->status='OK';
         $reply->ticket = $this->ticketGet($ticket);
       }
@@ -404,7 +410,7 @@ public function handleFile($ticket, $request) {
         $attachment_id=$this->handleFile($t, $request) ;
     }
 
-    $t->addUpdate('Ticket Opened' , $attachment_id,null , true);  // this will now also take care of the TicketOpened email
+    $t->addUpdate('Ticket Opened' , $attachment_id,null  , false, true);  // this will now also take care of the TicketOpened email
 
     $reply->id=$t->id;
     $reply->status='OK';

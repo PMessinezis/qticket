@@ -102,7 +102,7 @@ class Ticket extends Model
 
 
 
-    public function addUpdate($comment, $attachment_id, $changes , $NEWTICKET=false){
+    public function addUpdate($comment, $attachment_id, $changes , $justForResolvers=false, $NEWTICKET=false){
         $user=Auth::user();
         $resolverUser=null;
 
@@ -121,6 +121,7 @@ class Ticket extends Model
         $update->updatedBy_uid=$user->uid;
         $update->updatedDateTime=$now;
         $update->comment=$comment;
+        $update->resolverNote=$justForResolvers;
         if ($changes) $update->setChanges($changes);
         if ($attachment_id) $update->attachment_id=$attachment_id;
         $update->ticket_id=$this->id;
@@ -184,7 +185,7 @@ class Ticket extends Model
 
             $to=trim($this->onBehalfOf->email);
             if ($to) {
-                $tem=new TicketClosed($this, $user, $comment,  $update, "Ticket $this->statustext : ");
+                $tem=new TicketClosed($this, $user, $justForResolvers ? '' : $comment,  $update, "Ticket $this->statustext : ");
                 if ($bccAll) {
                     Mail::to($to)->bcc($DL)->send($tem);
                 } else {
@@ -213,7 +214,7 @@ class Ticket extends Model
                         //        "email" => $tem  
                         // ] ) ;
                         array_push($ResolversGroupEmails ,$this->onBehalfOf->email);
-                        Mail::to($to)->cc($ResolversGroupEmails )->send($tem);
+                        Mail::to($to)->cc($ResolversGroupEmails )->bcc($DL)->send($tem);
                     }
                 }
             } 
@@ -233,16 +234,18 @@ class Ticket extends Model
             else {  // any other update
                 $to=trim($this->onBehalfOf->email);
                 // \Log::info("something changed - I should send an email to $to !");
-                if ($to) {
-                    $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket update : ');
-                    if ($bccAll) {
-                        Mail::to($to)->bcc($DL)->send($tem);
+                if (! $justForResolvers) {
+                    if ($to ) {
+                        $tem=new TicketUpdatedByUser($this, $user,  $comment,  $update, 'Ticket update : ');
+                        if ($bccAll) {
+                            Mail::to($to)->bcc($DL)->send($tem);
+                        } else {
+                            Mail::to($to)->bcc($DL)->send($tem);
+                        }
                     } else {
-                        Mail::to($to)->bcc($DL)->send($tem);
+                        $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket update : ');
+                        Mail::to($DL)->send($tem);
                     }
-                } else {
-                    $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket update : ');
-                    Mail::to($DL)->send($tem);
                 }
             }
         }

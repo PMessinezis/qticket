@@ -67,9 +67,9 @@
 			   <div v-for='(tu,i) in aTicket.updates'>
 
 			@if ( Auth::user()->isResolver )
-				<div style='font-size:0.9em; font-weight:bold'>@{{ makehuman(tu.updatedDateTime,true) }} - @{{ tu.updated_by.fullname   }} </div>
+				<div  v-if='tu.update' style='font-size:0.9em; font-weight:bold'>@{{ makehuman(tu.updatedDateTime,true) }} - @{{ tu.updated_by.fullname   }} </div>
 	        @else
-				<div style='font-size:0.9em; font-weight:bold'>@{{ userhuman(tu.updatedDateTime,true) }} - @{{ tu.updated_by.fullname   }} </div>
+				<div  v-if='tu.update' style='font-size:0.9em; font-weight:bold'>@{{ userhuman(tu.updatedDateTime,true) }} - @{{ tu.updated_by.fullname   }} </div>
 	        @endif				
 				<div v-if='tu.update' v-html='tu.update'></div>
 			    </div>
@@ -121,6 +121,8 @@
 				<vcontrol  type='select' form='newTicket' :options='resolverlist' v-model='aTicket.assignedResolver_id'  :allowclear='true'  name='assignedResolver_id' label='Assigned Resolver:' placeholder='Resolver' class='col-md-4 ' >
 				</vcontrol>
   								
+				<vcontrol v-show="newComment && newComment > ''" type='checkbox' class='col-md-3 col-sm-3' name='resolversnotes' v-model='resolversnotes' :value='resolversnotes'>Resolver Notes</vcontrol>
+
   				<div class="clearfix"></div>
 
 <!--   				<vcontrol type='text'   class='col-md-5' id=resolution form='editTicket' :allowclear='true'  :value='aTicket.resolution' v-model='aTicket.resolution' name='resolution'  label='Resolution:' ></vcontrol>
@@ -131,7 +133,7 @@
 	
 			@endif
 			<vcontrol type='textarea'  rows=3 id=newComment  v-model='newComment' class='col-md-12' name='newComment' label='Νέο σχόλιο:'></vcontrol>
-<div  >
+<div>
 
 			<vcontrol type='file' class='col-md-6' v-model='selectedfile' style="margin-top:10px; overflow-x: wrap; overflow-y:visible" name='file' label=''>
 			</vcontrol>
@@ -146,8 +148,9 @@
 			<!-- <vcontrol type='button' class='col-md-2' v-on:click="closeTicket()">Close ticket</vcontrol>  -->
 <!-- 			<vcontrol type='select' id=rootCause form='editTicket' :options='rootcauselist' :value='aTicket.rootCause_id' v-model='aTicket.rootCause_id' wrapperstyle='padding-right:2px ; padding-left:2px;' name='rootCause_id'  label='Root Cause:'  :allowclear='true' placeholder='Root Cause' class=col-md-2>
 			</vcontrol>
- -->			<input type=hidden id=onBehalfOf_uid name=onBehalfOf_uid v-model='aTicket.onBehalfOf_uid'>
-			<vcontrol type='submit' class='col-md-2 pull-right' label='Ενημέρωση'></vcontrol>
+ -->	    	
+ 				<input type=hidden id=onBehalfOf_uid name=onBehalfOf_uid v-model='aTicket.onBehalfOf_uid'>
+				<vcontrol type='submit' class='col-md-2 pull-right' label='Ενημέρωση'></vcontrol>
 			@else 
 
 			<input type=hidden name=status_id  v-model='aTicket.status_id'>
