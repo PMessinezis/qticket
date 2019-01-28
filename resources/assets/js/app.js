@@ -817,25 +817,25 @@ const App = new Vue({
         },
 
         closeTicket(){
-            if (this.user.isResolver && this.aTicket.rootCause_id <1 ) {
-                 // this.showUserMessage('Need to specify Root Cause','bottom', 'right');
-                 if ( this.newComment=='' ) {
-                    this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο', 'bottom','left');
-                    return;
-                 }
-            }
-            if (this.user.isResolver &&  this.newComment=='' ) {
-                this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο','bottom', 'right');
-                return;
-            }
+            // if (this.user.isResolver && this.aTicket.rootCause_id <1 ) {
+            //      // this.showUserMessage('Need to specify Root Cause','bottom', 'right');
+            //     if ( this.newComment=='' ) {
+            //         this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο', 'bottom','left');
+            //         return;
+            //     }
+            // }
+            // if (this.user.isResolver &&  this.newComment=='' ) {
+            //     this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο','bottom', 'right');
+            //     return;
+            // }
             this.setStatusAndSubmit('Closed');
         },
 
         cancelTicket(){
-            if (this.user.isResolver &&  this.newComment=='' ) {
-                this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο');
-                return;
-            }
+            // if (this.user.isResolver &&  this.newComment=='' ) {
+            //     this.showUserMessage('Παρακαλώ να προστεθεί και σχετικό σχόλιο');
+            //     return;
+            // }
             this.setStatusAndSubmit('Cancelled');
         },
 

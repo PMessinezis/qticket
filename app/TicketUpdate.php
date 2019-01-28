@@ -104,7 +104,7 @@ class TicketUpdate extends Model
         if ( ($u->isResolver || !$this->resolverNote) && ($this->comment>'') ) {
             $c= $chg . ( $this->resolverNote ? '<i style="color:blue">' : '' ) . nl2br($this->comment) . ( $this->resolverNote ? '</i>' : '' ) ;
         } else { 
-            $c='';
+            $c=$chg ;
         }
         $c .= $this->attachment ?  ( $c ? '<br>' : '' ) . $this->attachment->htmlAnchor() : '' ;
         return $c;

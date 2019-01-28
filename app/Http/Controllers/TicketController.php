@@ -132,7 +132,7 @@ class TicketController extends CrudController
     }
 
     $empid=$me->employeeid ;
-    $relatedUsers=User::whereRaw("employeeid='$empid' and uid<>'$me->uid'")->get();
+    $relatedUsers=User::whereRaw("employeeid>'' AND employeeid='$empid' and uid<>'$me->uid'")->get();
 
     $group=$request->input('group');
     if ($group && $me->isResolver ) {
