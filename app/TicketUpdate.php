@@ -65,7 +65,7 @@ class TicketUpdate extends Model
 
     public function getUpdateAttribute()
     {
-
+        // mylog("asking ticket update");
         $u=Auth::User();
         $chobj=$this->getChanges();
          // dd($chobj);
@@ -101,7 +101,7 @@ class TicketUpdate extends Model
             }
         }
         if ($chg) $chg .= '<br>';
-        if ( ($u->isResolver || !$this->resolverNote) && ($this->comment>'') ) {
+        if (  (! isset($u) || ! $u ) || ( ($u->isResolver || !$this->resolverNote) && ($this->comment>'')) ) {
             $c= $chg . ( $this->resolverNote ? '<i style="color:blue">' : '' ) . nl2br($this->comment) . ( $this->resolverNote ? '</i>' : '' ) ;
         } else { 
             $c=$chg ;

@@ -200,7 +200,7 @@ class TicketController extends CrudController
     }
 
     // dd($whereRaw);
-    Log::info(' Tickets SQL query ' . $me->uid , [ 'sql' =>  $whereRaw ]) ;
+    // Log::info(' Tickets SQL query ' . $me->uid , [ 'sql' =>  $whereRaw ]) ;
 
     $tq=Ticket::whereRaw($whereRaw);
 

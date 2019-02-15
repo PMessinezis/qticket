@@ -179,6 +179,16 @@ function ldapinfo($uid){
     return ldapinfoByAttr('sAMAccountName',$uid) ;
 }
 
+function refreshAllUsersFromLDAP(){
+    $users=App\User::all();
+    foreach ($users as $u){
+        if ($u->phone1=='' || is_null($u->phone1)) {
+            echo $u->name . PHP_EOL;
+            $u->refreshFromLDAP();
+        }
+    }    
+}
+
 
 function myURL($s){
     $root=isset($_SERVER['HTTP_REALROOT']) ? $_SERVER['HTTP_REALROOT'] : '' ;

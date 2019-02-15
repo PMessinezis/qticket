@@ -181,7 +181,7 @@ class Ticket extends Model
 
 
         } else if ($TICKETCLOSED) {
-            // \Log::info( " ticket closed email ") ;
+            mylog( " ticket closed email ") ;
 
             $to=trim($this->onBehalfOf->email);
             if ($to) {
@@ -200,6 +200,7 @@ class Ticket extends Model
 
             if ( ( (! $user->isResolver) || $userTicket ) && $resolverUser && ($resolverUser->uid  != $user->uid) ) {
                 // ticket updated by (a) user - inform resolver - cc helpdesk - bcc reviewers, and if enabled assigned group members 
+                mylog("send TicketUpdatedByUser email ");
                 $to=trim($resolverUser->email);
                 // \Log::info( " ticket updated by user email " . $to) ;
                 if ($to) {
@@ -207,7 +208,8 @@ class Ticket extends Model
                      if ($bccAll) {
                         // \Log::info("bccall");
                         // \Log::info( " ticket updated by user email 1 "  , [ "to" -> $to  , "resolversEmails" =>   $ResolversGroupEmails  ,  "onBehalf" => $this->onBehalfOf->email , "bcc" => $DL ] ) ;
-                        Mail::to($to)->cc( [ $ResolversGroupEmails ,$this->onBehalfOf->email]  )->bcc($DL)->send($tem);
+                        array_push($ResolversGroupEmails ,$this->onBehalfOf->email);
+                        Mail::to($to)->cc( $ResolversGroupEmails  )->bcc($DL)->send($tem);
                     } else {
                         // \Log::info("not bccall");
                         // \Log::info( " ticket updated by user email 2 " , [ 
@@ -233,8 +235,10 @@ class Ticket extends Model
             // } 
             else {  // any other update
                 $to=trim($this->onBehalfOf->email);
-                // \Log::info("something changed - I should send an email to $to !");
+                 
+                
                 if (! $justForResolvers) {
+                    mylog("send TicketUpdated email ");
                     if ($to ) {
                         $tem=new TicketUpdatedByUser($this, $user,  $comment,  $update, 'Ticket update : ');
                         if ($bccAll) {
@@ -246,6 +250,19 @@ class Ticket extends Model
                         $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket update : ');
                         Mail::to($DL)->send($tem);
                     }
+                } else if ($user->isReviewer) {
+                    mylog("send Reviewed email comment=$comment " );
+                    $to='';
+                    if ( $resolverUser && ($resolverUser->uid  != $user->uid) ) {
+                        $to=trim($resolverUser->email);
+                    }
+                    $tem=new TicketUpdatedByUser($this, $user, $comment,  $update, 'Ticket Reviewed: ');
+                    if ($to) {
+                        Mail::to($to)->bcc($DL)->send($tem);
+                    } else {        
+                        Mail::to($ResolversGroupEmails  )->bcc($DL)->send($tem);
+                    } 
+
                 }
             }
         }

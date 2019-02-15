@@ -107,7 +107,7 @@ class User extends Authenticatable
         if ($ld->count()) {
             $this->firstname=( $ld['givenname'] ?? '' );
             $this->lastname=( $ld['sn'] ?? '' );
-            $this->employeeid=( $ld['employeeid'] ?? '' );
+            $this->employeeid= ( $this->employeeid ?? ( $ld['employeeid'] ?? '' ));
             $this->title=( $ld['title'] ?? '' );
             $this->description=( $ld['description'] ?? '' );
             if ($this->description=='') {
@@ -122,7 +122,9 @@ class User extends Authenticatable
             if ($adr != '' && $city != '') $adr=$adr . ', ';
             $this->topothesia=  $adr . $city;  
             // dd($this);
+            echo " $this->description   $this->phone1    $this->phone2  " . PHP_EOL ;
             if ($this->firstname=='' || $this->lastname=='')  {
+                echo $this->description .  " OOPS ! " . PHP_EOL ;
                 return null;
             }
             $this->save();
