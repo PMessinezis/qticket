@@ -159,7 +159,7 @@
 
 			
 			
-</div>
+			</div>
 
 			{!! Form::close() !!}
 			<vcontrol type=button v-if='aTicket && aTicket.status && aTicket.status.isTerminal' class="pull-right" style="margin-right:15px;" v-on:click="reOpenTicket(aTicket.id)">Re-Open Ticket</vcontrol>
@@ -167,11 +167,11 @@
 		</div>
 
 
-			<div id=errors></div>
-		 </div>
+		
+		</div>
 			
+		<div v-if='updateResult > "" ' id='Error message'  class='col-md-12' style='display:false; font-size:20px; padding-top:10px; color:red;'><span v-html="updateResult"></span></div>
 
-	</div>
 {{-- 
 	first part show ticket data in a paragraph 
 		1st line who/when/priority/status

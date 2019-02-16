@@ -255,4 +255,9 @@ function Utils(){
 
 }
 
+function dump(obj) {
+    var out = JSON.stringify(obj, null, 2);
+    return out;
+}
+
 export default new Utils;

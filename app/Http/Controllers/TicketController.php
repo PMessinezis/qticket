@@ -287,7 +287,9 @@ public function handleFile($ticket, $request) {
     $me=Auth::user();
 
     $reply = (object) array();
-    
+    if ($me->uid=="pmessinezis") {
+     
+    }
     $fields2check = TicketUpdate::fields2check;
     $changes=[];
     

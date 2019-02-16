@@ -106,6 +106,7 @@ const qticket =  {
         vendorlist:[],
         rootcauselist:[],
         submitResult:'',
+        updateResult:'',
         filters: {
         },
         newiscritical:false,
@@ -726,15 +727,24 @@ const App = new Vue({
 
         fixEditForm(id) {
             var me=this;
+            me.submitResult='';
+            me.updateResult='';
             id = id ? id : me.aTicket.id;
             $('form#editTicket').attr('action', myURL('/json/ticket/' + id));
             var myform= jQuery('form#editTicket').first();
             
             var OhOh=function(reply){
-                myform.find('#errors').html(reply);
+                console.log(reply) ; 
+                if ( ( (reply.status*1)>0 ) && (reply.status!=200)) {
+                    me.updateResult="Update Failed - Error " + reply.status +  "<br><pre>" + JSON.stringify(reply, null, 2)  + "</pre>";
+                } else {
+                    me.updateResult=  "<pre>" + JSON.stringify(reply, null, 2)  + "</pre>" 
+                }
+                
             };
             var mySubmitResult=function(reply){
                 me.submitResult='';
+                me.updateResult='';
                 // console.log('submitting');
                 if(reply.status=='OK') {                
                     if (reply.ticket) {
@@ -753,7 +763,7 @@ const App = new Vue({
                     }
                 } else {
                     log('Submit returned errors');
-                    me.editSubmitResult=reply.message;
+                    me.updateResult=reply.message;
                 }
                 me.getTickets();
             }
