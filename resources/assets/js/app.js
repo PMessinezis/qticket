@@ -738,7 +738,7 @@ const App = new Vue({
                 if ( ( (reply.status*1)>0 ) && (reply.status!=200)) {
                     me.updateResult="Update Failed - Error " + reply.status +  "<br><pre>" + JSON.stringify(reply, null, 2)  + "</pre>";
                 } else {
-                    me.updateResult=  "<pre>" + JSON.stringify(reply, null, 2)  + "</pre>" 
+                    me.updateResult=  "Update Failed" ;
                 }
                 
             };
