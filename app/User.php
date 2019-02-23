@@ -35,6 +35,20 @@ class User extends Authenticatable {
 		return $this->belongsToMany('App\ADGroup', 'ticketsviewerofadgroup', 'user_uid', 'adgroup_gid');
 	}
 
+	public function viewerOfUsers() {
+		$users = collect([]);
+		$groups = $this->viewerOf;
+		foreach ($groups as $g) {
+			$users = $users->merge($g->members);
+		}
+		return $users;
+	}
+
+	public function viewerOfUids() {
+		$users = $this->viewerOfUsers();
+		return $users ? $users->pluck('uid')->toArray() : [];
+	}
+
 	public function getFullnameAttribute() {
 		if ($this->lastname && $this->firstname) {
 			$n = $this->lastname . ', ' . $this->firstname;
