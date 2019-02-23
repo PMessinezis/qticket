@@ -20,22 +20,48 @@ class UserController extends CrudController {
 
 		$this->crud->removeColumns(["remember_token", "isTempEntry"]);
 		$this->crud->removeFields(["remember_token", "isTempEntry"], 'both');
-		$this->crud->orderBy('uid');
+		$this->crud->orderBy('lastname');
 		$this->crud->removeColumn('id');
 		$this->crud->addField('uid')->beforeField('id');
+		$this->crud->addColumn('uid')->beforeColumn('firstname');
 		$this->crud->removeField('id');
+		$this->crud->removeField('directorate');
+		$this->crud->removeField('nomiko');
+		$this->crud->removeField('description');
+		$this->crud->removeField('topothesia');
+		$this->crud->removeField('manager_uid');
 		$this->crud->setDefaultPageLength(100);
 		$this->crud->addField(
 			[ // Select2Multiple = n-n relationship (with pivot table)
 				'label' => "Viewer of Groups",
-				'type' => 'select_multiple',
+				'type' => 'select2_multiple',
 				'name' => 'viewerOf', // the method that defines the relationship in your Model
 				'entity' => 'viewerOf', // the method that defines the relationship in your Model
 				'attribute' => 'gid', // foreign key attribute that is shown to user
 				'model' => "App\ADGroup", // foreign key model
 				'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
 			],
-			'update')->beforeField('topothesia');
+			'update');
+
+		// $fields = [
+		// 	'uid', 'firstname', 'lastname', 'email', 'phone1', 'phone2',
+		// 	[ // Select2Multiple = n-n relationship (with pivot table)
+		// 		'label' => "Viewer of Groups",
+		// 		'type' => 'select2_multiple',
+		// 		'name' => 'viewerOf', // the method that defines the relationship in your Model
+		// 		'entity' => 'viewerOf', // the method that defines the relationship in your Model
+		// 		'attribute' => 'gid', // foreign key attribute that is shown to user
+		// 		'model' => "App\ADGroup", // foreign key model
+		// 		'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+		// 	],
+		// ];
+		// $cols = [
+		// 	'uid', 'firstname', 'lastname', 'email', 'employeeid', 'phone1', 'phone2',
+		// ];
+
+		// $this->crud->addFields($fields);
+		// $this->crud->setColumns($cols);
+		$this->crud->query = $this->crud->query->orderBy('lastname', 'asc');
 	}
 
 	public function store(StoreRequest $request) {

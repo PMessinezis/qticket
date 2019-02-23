@@ -209,7 +209,7 @@ function addSecGroups() {
 		$dn = $g["dn"];
 		if (!App\ADGroup::find($gid)) {
 			$adg = new App\ADGroup;
-			$adg->gid = $gid;
+			$adg->gid = str_replace("&", "and", $gid);
 			$adg->dn = $dn;
 			$adg->save();
 			echo "Adding $gid : $dn" . PHP_EOL;
