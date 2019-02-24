@@ -14,7 +14,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      
+
       <form class="navbar-form navbar-left">
       {{--   <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
@@ -25,28 +25,26 @@
         <!-- <li><button id=newTicket v-if='!newTicket' @click='showNewTicket'>Open a new ticket</button></li> -->
         @if(Auth::check())
          <li> <a href=""> {{ Auth::User()->name }} </a> </li>
-        @endif 
-        @if(Auth::User()->isResolver)
-         <li><a href={{ myURL("export") }} style='color:#1f1d5b'> <i class="fas fa-download"> </i> Export</a></li>
-        @endif 
+        @endif
+        <li><a href={{ myURL("export") }} style='color:#1f1d5b'> <i class="fas fa-download"> </i> Export</a></li>
         @if(Auth::User()->isAdmin())
-         
-          <a v-show='!editAlert' href="#" @click="startEditAlert" ><i class="fas fa-bullhorn" style="display:inline;  color:#1f1d5b; padding-top:10px; display:inline; " ></i> 
+
+          <a v-show='!editAlert' href="#" @click="startEditAlert" ><i class="fas fa-bullhorn" style="display:inline;  color:#1f1d5b; padding-top:10px; display:inline; " ></i>
           </a>
-         
-         
+
+
            <li v-show='editAlert' style='display:none'>
-              <form style="padding-top:10px; display:inline;  color:#1f1d5b" > 
-                ALERT : 
-                <input v-model='alert' style="margin-top:10px; display:inline ;  color:black; width:600px; " /> 
+              <form style="padding-top:10px; display:inline;  color:#1f1d5b" >
+                ALERT :
+                <input v-model='alert' style="margin-top:10px; display:inline ;  color:black; width:600px; " />
                 <a href="#" @click="updateAlert" ><i class="fas fa-save" style="display:inline;  color:#1f1d5b"> </i> </a>
-              </form> 
+              </form>
            </li>
-         
+
          <li><a href={{ myURL("admin") }} style='color:#1f1d5b'> <i class="fas fa-user-secret"> </i> Admin panel</a></li>
 
-        @endif 
-        
+        @endif
+
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

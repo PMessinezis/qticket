@@ -32,7 +32,7 @@ class SSO {
 
 			if ($auser == 'pmessinezis') {
 				// // below is to "impersonate" another user and check the behavior of the system for that user
-				// $auser = 'stkonidaris';
+				// $auser = 'vkountouraki';
 			}
 
 			$user = User::where('uid', $auser)->first();
