@@ -62,7 +62,7 @@ const qticket =  {
             {field:'refid' , label:'Ref#' , style:"text-align:center; font-size:1.1em", sortBy:"id"},
             {field:'onBehalfOfName' , label:'Από' },
             {field:'title' , label:'Θέμα' },
-            {field:'assignedGroupName' , label:'Ανατεθιμένο' },
+            {field:'assignedGroupName' , label:'Ανατεθειμένο' },
             {field:'statusText' , label:'Κατάσταση' , style:"text-align:center"},
             {field:'openedOn' , label:'Δημιουργήθηκε' , style:"text-align:center", sortBy:'created_at'},
             {field:'lastUpdate' , label:'Ενημερώθηκε' , style:"text-align:center", sortBy:'updated_at'},
