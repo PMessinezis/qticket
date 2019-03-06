@@ -423,6 +423,15 @@ function readCRSensors() {
 	return $RET;
 }
 
+function getGuides() {
+	return [
+		['id' => 'emailonphone', 'file' => 'Mail to phone.pdf', 'label' => 'Setup QQuant email on the phone'],
+		['id' => 'webmail', 'file' => 'Web Mail Access.pdf', 'label' => 'Open your email via webmail'],
+		['id' => 'webmailpass', 'file' => 'Reset AD User Password.pdf', 'label' => 'Change your password via webmail'],
+		['id' => 'credmgr', 'file' => 'To open Credentials Manager.pdf', 'label' => 'Add Credentials Manager Entry'],
+		['id' => 'wifi', 'file' => 'Wi-fi Manual.pdf', 'label' => 'Connect your phone to the corporate WiFi'],
+	];
+}
 function getStaticData() {
 	$u = Auth::User() ? Auth::User()->load('resolver') : null;
 	$res = collect([
@@ -436,6 +445,7 @@ function getStaticData() {
 		'vendors' => App\Vendor::all(),
 		'rootcauses' => App\RootCause::all(),
 		'users' => App\User::orderBy('lastname')->get(),
+		'guides' => getGuides(),
 
 	])
 	;

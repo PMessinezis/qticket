@@ -15,9 +15,6 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
- @if(Auth::User()->uid=="pmessinezis")
- hi
- @endif
 
       <form class="navbar-form navbar-left">
       {{--   <div class="form-group">
@@ -26,6 +23,19 @@
         <button type="submit" class="btn btn-default">Submit</button> --}}
       </form>
       <ul class="nav navbar-nav navbar-right">
+
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">How To ...<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+
+            <li  v-for="guide in guides" ><a v-bind:href="'guide/' + guide.id"  target="_blank"> @{{ guide.label }} </a></li>
+
+          </ul>
+        </li>
+      </ul>
+
+
         <!-- <li><button id=newTicket v-if='!newTicket' @click='showNewTicket'>Open a new ticket</button></li> -->
         @if(Auth::check())
          <li> <a href=""> {{ Auth::User()->name }} </a> </li>

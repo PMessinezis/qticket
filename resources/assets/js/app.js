@@ -125,7 +125,8 @@ const qticket =  {
         retriesCount:0,
         Google_API_Key:"AIzaSyDXk8zuRBO-ezemIZqSk5uoP9MReobM7mM",
         editOnBehalfOf:false,
-        editAlert:false
+        editAlert:false,
+        guides: [] 
 };
 
 var vBus=new Vue;
@@ -638,6 +639,8 @@ const App = new Vue({
                     me.onbehalfofuid=me.user.uid;
                 };
 
+
+                me.guides = SD.guides;
 
                 me.newTicket= ! me.user.isResolver || ! me.tickets.length ;
                 me.startAutoUpdate();
