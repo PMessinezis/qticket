@@ -24,15 +24,24 @@ class SSO {
 		// dd($_SERVER);
 
 		$auser = '';
+		// mylog("SSO ", ["remoteUser" => $_SERVER['REMOTE_USER']]);
 		if (isset($_SERVER['REMOTE_USER'])) {
 			// dd($_SERVER['REMOTE_USER']);
 			$domuser = $_SERVER['REMOTE_USER'];
 			$domuserparts = explode('\\', $domuser);
+			$adomain = $domuserparts[0];
 			$auser = $domuserparts[1];
 
 			if ($auser == 'pmessinezis') {
 				// // below is to "impersonate" another user and check the behavior of the system for that user
 				// $auser = 'vkountouraki';
+			}
+			if ($adomain != "NEW_QUALCO") {
+				mylog("SSO ", [
+					"remoteUser" => $_SERVER['REMOTE_USER'],
+					"PHPUser" => $_SERVER['PHP_AUTH_USER'],
+					"authType" => $_SERVER['AUTH_TYPE'],
+				]);
 			}
 
 			$user = User::where('uid', $auser)->first();

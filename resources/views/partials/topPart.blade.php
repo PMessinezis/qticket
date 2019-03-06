@@ -15,6 +15,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
+ @if(Auth::User()->uid=="pmessinezis")
+ hi
+ @endif
+
       <form class="navbar-form navbar-left">
       {{--   <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">

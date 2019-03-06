@@ -139,10 +139,10 @@ class User extends Authenticatable {
 			$this->topothesia = $adr . $city;
 			// dd($this);
 			echo " $this->description   $this->phone1    $this->phone2  " . PHP_EOL;
-			if ($this->firstname == '' || $this->lastname == '') {
-				echo $this->description . " OOPS ! " . PHP_EOL;
-				return null;
-			}
+			// if ($this->firstname == '' || $this->lastname == '') {
+			// 	echo $this->description . " OOPS ! " . PHP_EOL;
+			// 	return null;
+			// }
 			$this->save();
 		} else {
 			return null;
