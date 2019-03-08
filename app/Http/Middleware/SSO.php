@@ -24,6 +24,7 @@ class SSO {
 		// dd($_SERVER);
 
 		$auser = '';
+		$adomain = '';
 		// mylog("SSO ", ["remoteUser" => $_SERVER['REMOTE_USER']]);
 		if (isset($_SERVER['REMOTE_USER'])) {
 			// dd($_SERVER['REMOTE_USER']);
@@ -31,20 +32,21 @@ class SSO {
 			$domuserparts = explode('\\', $domuser);
 			$adomain = $domuserparts[0];
 			$auser = $domuserparts[1];
-
+			\Config::set('qticket.LDAP_USER_DOMAIN', $adomain);
+			// mylog(config('qticket.LDAP_USER_DOMAIN'));
 			if ($auser == 'pmessinezis') {
 				// // below is to "impersonate" another user and check the behavior of the system for that user
 				// $auser = 'vkountouraki';
 			}
-			if ($adomain != "NEW_QUALCO") {
-				mylog("SSO ", [
-					"remoteUser" => $_SERVER['REMOTE_USER'],
-					"PHPUser" => $_SERVER['PHP_AUTH_USER'],
-					"authType" => $_SERVER['AUTH_TYPE'],
-				]);
-			}
 
 			$user = User::where('uid', $auser)->first();
+		} else {
+			mylog("SSO ", [
+				"remoteUser" => $_SERVER['REMOTE_USER'],
+				"PHPUser" => $_SERVER['PHP_AUTH_USER'],
+				"authType" => $_SERVER['AUTH_TYPE'],
+			]);
+
 		}
 		if (!User::all()->count()) {
 			if ($auser == '') {

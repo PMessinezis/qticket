@@ -1,5 +1,13 @@
 <?php
 
+function getLDAPDomain() {
+	$domain = config('qticket.LDAP_USER_DOMAIN');
+	if ($domain == '') {
+		$domain = $_SERVER["USERDOMAIN"];
+	}
+	return $domain;
+}
+
 function ldapcheckfixdates($v) {
 	if (is_numeric($v) and strlen($v) > 13) {
 		$win_secs = (int) ($v / 10000000);
@@ -20,13 +28,14 @@ function array_map_assoc($array) {
 
 function ldapQuery($ldap_base, $ldap_filter, $ldap_fields) {
 	$ldapinfoR = [];
+	$domain = getLDAPDomain();
 	if (function_exists('ldap_connect')) {
-		$ldap = ldap_connect(config('qticket.LDAP_DOMAIN'));
+		$ldap = ldap_connect(config('qticket.LDAP_DOMAIN_' . $domain));
 		ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 		ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-		$encrypted = config('qticket.LDAP_PASSWORD');
+		$encrypted = config('qticket.LDAP_PASSWORD_' . $domain);
 		$decrypted = Crypt::decryptString($encrypted);
-		$ldapbind = ldap_bind($ldap, config('qticket.LDAP_USER'), $decrypted);
+		$ldapbind = ldap_bind($ldap, config('qticket.LDAP_USER_' . $domain), $decrypted);
 		if ($ldapbind) {
 			$res = ldap_search($ldap, $ldap_base, $ldap_filter, $ldap_fields, 0, 0);
 			$entries = ldap_get_entries($ldap, $res);
@@ -57,7 +66,8 @@ function ldapQuery($ldap_base, $ldap_filter, $ldap_fields) {
 }
 
 function getQQSecGroups() {
-	return ldapQuery(config('qticket.LDAP_ROOT'), "(&(objectCategory=group)(samaccountname=sec_dpt_*))", ["samaccountname", "dn"]);
+	$domain = getLDAPDomain();
+	return ldapQuery(config('qticket.LDAP_ROOT_' . $domain), "(&(objectCategory=group)(samaccountname=sec_dpt_*))", ["samaccountname", "dn"]);
 }
 
 function getQQUsers() {
@@ -135,16 +145,26 @@ function addRefreshQQUsers() {
 function ldapinfoByAttr($attrN, $attrV) {
 	$ldapinfo = collect([]);
 	if (function_exists('ldap_connect')) {
-		$ldap = ldap_connect(config('qticket.LDAP_DOMAIN'));
+		$domain = config('qticket.LDAP_USER_DOMAIN');
+		if ($domain == '') {
+			$domain = $_SERVER["USERDOMAIN"];
+			mylog('ldapinfo for ' . $domain);
+		}
+		$ldap = ldap_connect(config('qticket.LDAP_DOMAIN_' . $domain));
+
 		ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 		ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-		$encrypted = config('qticket.LDAP_PASSWORD');
+		$encrypted = config('qticket.LDAP_PASSWORD_' . $domain);
 		$decrypted = Crypt::decryptString($encrypted);
-		$ldapbind = ldap_bind($ldap, config('qticket.LDAP_USER'), $decrypted);
+
+		$ldapbind = ldap_bind($ldap, config('qticket.LDAP_USER_' . $domain), $decrypted);
+
 		if ($ldapbind) {
 			$ldapFilter = "(&(objectCategory=person)(objectClass=user)($attrN=$attrV))";
 			$fields = array("*");
-			$res = ldap_search($ldap, config('qticket.LDAP_ROOT'), $ldapFilter, $fields);
+
+			$res = ldap_search($ldap, config('qticket.LDAP_ROOT_' . $domain), $ldapFilter, $fields);
+
 			$entries = ldap_get_entries($ldap, $res);
 			for ($i = 0; $i < $entries["count"]; $i++) {
 				$r = $entries[$i];
@@ -182,7 +202,8 @@ function ldapinfo($uid) {
 
 function getADGroupMembers($gid) {
 	$members = [];
-	$base = config('qticket.LDAP_ROOT');
+	$domain = getLDAPDomain();
+	$base = config('qticket.LDAP_ROOT_' . $domain);
 	$filter = "(&(objectCategory=group)(samaccountname=$gid))";
 	$fields = ['dn'];
 	$groupDNs = ldapQuery($base, $filter, $fields);
@@ -196,7 +217,8 @@ function getADGroupMembers($gid) {
 }
 
 function getADGroupMembersViaDN($gdn) {
-	$base = config('qticket.LDAP_ROOT');
+	$domain = getLDAPDomain();
+	$base = config('qticket.LDAP_ROOT_' . $domain);
 	$filter = "(&(objectCategory=person)(memberof=$gdn))";
 	$fields = ['samaccountname'];
 	return ldapQuery($base, $filter, $fields);
@@ -206,10 +228,11 @@ function addSecGroups() {
 	$adgroups = getQQSecGroups();
 	foreach ($adgroups as $g) {
 		$gid = $g["samaccountname"];
+		$gid = str_replace("&", "and", $gid);
 		$dn = $g["dn"];
 		if (!App\ADGroup::find($gid)) {
 			$adg = new App\ADGroup;
-			$adg->gid = str_replace("&", "and", $gid);
+			$adg->gid = $gid;
 			$adg->dn = $dn;
 			$adg->save();
 			echo "Adding $gid : $dn" . PHP_EOL;
