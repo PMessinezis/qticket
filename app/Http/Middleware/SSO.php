@@ -30,8 +30,8 @@ class SSO {
 			// dd($_SERVER['REMOTE_USER']);
 			$domuser = $_SERVER['REMOTE_USER'];
 			$domuserparts = explode('\\', $domuser);
-			$adomain = $domuserparts[0];
-			$auser = $domuserparts[1];
+			$adomain = strtoupper($domuserparts[0]);
+			$auser = strtolower($domuserparts[1]);
 			\Config::set('qticket.LDAP_USER_DOMAIN', $adomain);
 			// mylog(config('qticket.LDAP_USER_DOMAIN'));
 			if ($auser == 'pmessinezis') {
@@ -71,6 +71,15 @@ class SSO {
 		}
 		if (isset($user)) {
 			// dd($user);
+			if (isset($user->lastUserDomain)) {
+				if ($user->lastUserDomain != $adomain) {
+					$user->lastUserDomain = $adomain;
+					$user->save();
+				}
+			} else {
+				$user->lastUserDomain = $adomain;
+				$user->save();
+			}
 			if (Auth::check() && (Auth::id() == $user->uid)) {
 
 			} else {
@@ -86,6 +95,6 @@ class SSO {
 			} else {
 				return $next($request);
 			}
-		} else {dd("$auser you are not logged on as a valid user");}
+		} else {dd("$adomain\\$auser you are not logged on as a valid user");}
 	}
 }
