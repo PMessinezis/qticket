@@ -112,6 +112,9 @@ class User extends Authenticatable {
 	}
 
 	public function ldapinfo() {
+		if (isset($this->lastUserDomain)) {
+			setCurrentUserDomain($this->lastUserDomain);
+		}
 		return ldapinfo($this->uid);
 	}
 

@@ -1,7 +1,7 @@
 <?php
 
 function getLDAPDomain() {
-	$domain = config('qticket.LDAP_USER_DOMAIN');
+	$domain = getCurrentUserDomain();
 	if ($domain == '') {
 		$domain = $_SERVER["USERDOMAIN"];
 	}
@@ -145,7 +145,7 @@ function addRefreshQQUsers() {
 function ldapinfoByAttr($attrN, $attrV) {
 	$ldapinfo = collect([]);
 	if (function_exists('ldap_connect')) {
-		$domain = config('qticket.LDAP_USER_DOMAIN');
+		$domain = getCurrentUserDomain();
 		if ($domain == '') {
 			$domain = $_SERVER["USERDOMAIN"];
 			mylog('ldapinfo for ' . $domain);
@@ -480,4 +480,12 @@ function mylog($s, $symbols = []) {
 	$me = Auth::User();
 	$myInfo = $me ? 'User: ' . $me->uid . ' | ' : '';
 	Log::info($myInfo . $s, $symbols);
+}
+
+function setCurrentUserDomain($adomain) {
+	\Config::set('qticket.LDAP_USER_DOMAIN', $adomain);
+}
+
+function getCurrentUserDomain() {
+	return config('qticket.LDAP_USER_DOMAIN');
 }

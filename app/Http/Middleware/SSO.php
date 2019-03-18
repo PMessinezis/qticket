@@ -32,7 +32,7 @@ class SSO {
 			$domuserparts = explode('\\', $domuser);
 			$adomain = strtoupper($domuserparts[0]);
 			$auser = strtolower($domuserparts[1]);
-			\Config::set('qticket.LDAP_USER_DOMAIN', $adomain);
+			setCurrentUserDomain($adomain);
 			// mylog(config('qticket.LDAP_USER_DOMAIN'));
 			if ($auser == 'pmessinezis') {
 				// // below is to "impersonate" another user and check the behavior of the system for that user
