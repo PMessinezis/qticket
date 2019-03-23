@@ -453,8 +453,21 @@ function getGuides() {
 		['id' => 'webmailpass', 'file' => 'Reset AD User Password.pdf', 'label' => 'Change your password via webmail'],
 		['id' => 'credmgr', 'file' => 'To open Credentials Manager.pdf', 'label' => 'Add Credentials Manager Entry'],
 		['id' => 'wifi', 'file' => 'Wi-fi Manual.pdf', 'label' => 'Connect your phone to the corporate WiFi'],
+		['id' => 'emailonIphone', 'file' => 'Email - iOS Devices.pdf', 'label' => 'Setup QQuant email on the Iphone'],
+
 	];
 }
+
+function getHowToGuides() {
+	$g = App\Filelink::all();
+	$hgt = $g->map(function ($item, $key) {
+		return ['id' => $item->id, 'link' => $item->link, 'label' => $item->description];
+	});
+
+	return $hgt->toArray();
+
+}
+
 function getStaticData() {
 	$u = Auth::User() ? Auth::User()->load('resolver') : null;
 	$res = collect([
@@ -469,7 +482,7 @@ function getStaticData() {
 		'rootcauses' => App\RootCause::all(),
 		'users' => App\User::orderBy('lastname')->get(),
 		'guides' => getGuides(),
-
+		'howtoguides' => getHowToGuides(),
 	])
 	;
 	// dd($res);

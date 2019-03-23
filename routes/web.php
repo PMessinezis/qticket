@@ -34,6 +34,15 @@ Route::group(['middleware' => ['SSO']], function () {
 	Route::post('/newticket', 'TicketController@new');
 
 	Route::get('/attached/{attachment}/{whatever}', 'TicketController@getAttachment');
+
+	Route::get('/howtoguide/{id}/{whatever}', function ($id) {
+		$f = \App\Filelink::find($id);
+		if (isset($f)) {
+			return $f->download();
+		}
+		return '';
+	});
+
 	Route::get('/export', function () {
 		return Excel::download(new \App\Exports\TicketsExport, 'tickets_' . date("Ymd.Hi") . '.xlsx');
 
@@ -102,6 +111,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['SSO', 'admin']], function (
 	CRUD::resource('rootcause', 'RootCauseController');
 	CRUD::resource('vendor', 'VendorController');
 	CRUD::resource('department', 'DepartmentController');
+	CRUD::resource('filelink', 'FilelinkController');
 	CRUD::resource('group', 'GroupController');
 	CRUD::resource('resolver', 'ResolverController');
 	CRUD::resource('user', 'UserController');
