@@ -81,27 +81,26 @@ function checkUser($u) {
 	$sn = $u['sn'] ?? '';
 	$dn = $u['dn'];
 	$m = $u['mail'] ?? '';
+	$cn = $u['cn'] ?? '';
+	$desc = $u['description'] ?? '';
 	$uid = $u['samaccountname'];
 	$flags = $u['useraccountcontrol'];
+	$QQ = false;
+	$stat = "NOT_QQ";
 	if (!($flags & 2)) {
-		if ($sn != '' && strpos($m, 'qquant.gr') > 0) {
-			$auser = App\User::find($uid);
-			if (!$auser) {
-				App\User::fromLDAP($uid);
-			}
-		} else if ($sn != '') {
-			$M = App\User::where('lastname', '=', $sn)->get();
-			foreach ($M as $auser) {
-				$auser->refreshFromLDAP();
-				$buser = App\User::find($uid);
-				if (!$buser) {
-					App\User::fromLDAP($uid);
-				}
-			}
+		$QQ = $QQ || stripos($m, 'qquant.gr') !== false;
+		$QQ = $QQ || stripos($sn, 'qquant') !== false;
+		$QQ = $QQ || stripos($cn, 'qquant') !== false;
+		$QQ = $QQ || stripos($desc, 'qquant') !== false;
+		$QQ = $QQ || stripos($uid, 'qquant') !== false;
+		if ($QQ) {
+			$stat = "QQUANT";
 		}
 	} else {
-		echo $uid . ' is disabled ' . $u['dn'] . PHP_EOL;
+		$stat = "DISABLED";
 	}
+	echo "$stat;$uid;$sn;$dn;$desc;$m" . PHP_EOL;
+	mylog("$stat;$uid;$sn;$dn;$desc;$m");
 }
 
 function checkForQQUsers() {
@@ -109,7 +108,7 @@ function checkForQQUsers() {
 	$accounts = [];
 	foreach (range('a', 'z') as $L) {
 		$filter = "(&(objectCategory=person)(objectClass=user)(samaccountname=$L*))";
-		$fields = array('samaccountname', 'sn', 'mail', 'useraccountcontrol');
+		$fields = array('samaccountname', 'sn', 'mail', 'useraccountcontrol', 'cn', 'description', 'company');
 		$a = ldapQuery($base, $filter, $fields);
 		foreach ($a as $u) {
 			checkUser($u);
