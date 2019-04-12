@@ -22,24 +22,12 @@
         </div>
         <button type="submit" class="btn btn-default">Submit</button> --}}
       </form>
+
       <ul class="nav navbar-nav navbar-right">
 
       <ul class="nav navbar-nav">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">How To ...<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-
-            <li  v-for="guide in guides" ><a v-bind:href="'guide/' + guide.id"  target="_blank"> @{{ guide.label }} </a></li>
-
-          </ul>
-        </li>
-      </ul>
-
-
-      @if(Auth::User()->isAdmin())
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> NEW How-to ...<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">How-to ...<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
             <li  v-for="guide in howtoguides" ><a v-bind:href="guide.link"  target="_blank"> @{{ guide.label }} </a></li>
@@ -47,9 +35,6 @@
           </ul>
         </li>
       </ul>
-      @endif
-
-
 
 
         <!-- <li><button id=newTicket v-if='!newTicket' @click='showNewTicket'>Open a new ticket</button></li> -->
