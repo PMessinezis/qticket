@@ -13,8 +13,13 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div style='color:#1f1d5b' class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
+   <!--  <ul  class="nav navbar-nav ">
+    <li>
+      <a> Database : {{ config('database')['connections'][config('database.default')]['host'] }} </a>
+    </li>
+  </ul> -->
 
       <form class="navbar-form navbar-left">
       {{--   <div class="form-group">
@@ -27,7 +32,7 @@
 
       <ul class="nav navbar-nav">
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">How-to ...<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" style='color:#1f1d5b' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">How-to ...<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
             <li  v-for="guide in howtoguides" ><a v-bind:href="guide.link"  target="_blank"> @{{ guide.label }} </a></li>
@@ -39,12 +44,12 @@
 
         <!-- <li><button id=newTicket v-if='!newTicket' @click='showNewTicket'>Open a new ticket</button></li> -->
         @if(Auth::check())
-         <li> <a href=""> {{ Auth::User()->name }} </a> </li>
+         <li> <a href="" style='color:#1f1d5b'> {{ Auth::User()->name }} </a> </li>
         @endif
-        <li><a href={{ myURL("export") }} style='color:#1f1d5b'> <i class="fas fa-download"> </i> Export</a></li>
+        <li><a href={{ myURL("export") }} style='color:#0F781B'> <i class="fas fa-download"> </i> Export</a></li>
         @if(Auth::User()->isAdmin())
 
-          <a v-show='!editAlert' href="#" @click="startEditAlert" ><i class="fas fa-bullhorn" style="display:inline;  color:#1f1d5b; padding-top:10px; display:inline; " ></i>
+          <a v-show='!editAlert' href="#" @click="startEditAlert" ><i class="fas fa-bullhorn" style="display:inline;  color:#D40303; padding-top:10px; display:inline; " ></i>
           </a>
 
 
@@ -56,7 +61,7 @@
               </form>
            </li>
 
-         <li><a href={{ myURL("admin") }} style='color:#1f1d5b'> <i class="fas fa-user-secret"> </i> Admin panel</a></li>
+         <li><a href={{ myURL("admin") }} style='color:#0F781B'> <i class="fas fa-user-secret"> </i> Admin panel</a></li>
 
         @endif
 
