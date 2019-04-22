@@ -44,7 +44,9 @@
 
         <!-- <li><button id=newTicket v-if='!newTicket' @click='showNewTicket'>Open a new ticket</button></li> -->
         @if(Auth::check())
-         <li> <a href="" style='color:#1f1d5b'> {{ Auth::User()->name }} </a> </li>
+         <li> 
+          <a href="" title="{{ Auth::User()->lastUserDomain . '\\' . Auth::User()->uid  }}" style='color:#1f1d5b'> {{ Auth::User()->name }} </a> 
+        </li>
         @endif
         <li><a href={{ myURL("export") }} style='color:#0F781B'> <i class="fas fa-download"> </i> Export</a></li>
         @if(Auth::User()->isAdmin())
