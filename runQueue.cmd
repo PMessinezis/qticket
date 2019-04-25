@@ -17,7 +17,7 @@ if %C% GTR 10 (
 	Call :reload
 	set /A C=0
 )
-php artisan queue:work  -vvv --tries=1 --stop-when-empty
+php artisan queue:work  -vvv --tries=15 --stop-when-empty
 sleep 30
 set /A C=%C%+1
 if "%OldDate%" NEQ "%date%" goto :end

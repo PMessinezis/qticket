@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="Refresh" content="42222">
+    <meta http-equiv="Refresh" content="6000">
     <meta name="Pragma" content="no-cache;">
 
     <!-- CSRF Token -->

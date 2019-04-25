@@ -2,7 +2,7 @@
 {{-- show error using sidebar layout if looged in AND on an admin page; otherwise use a blank page --}}
 
 @php
-  $title = 'Error '.$error_number;
+  $title = $error_number;
 @endphp
 
 @section('after_styles')
@@ -14,7 +14,7 @@
       line-height: 100px;
     }
     .error_number small {
-      font-size: 56px;
+      font-size: 36px;
       font-weight: 700;
     }
 
@@ -38,15 +38,17 @@
       font-weight: 400;
     }
   </style>
+
+  @yield('more_styles')
 @endsection
 
 @section('content')
 <div class="row">
   <div class="col-md-12 text-center">
     <div class="error_number m-t-80">
-      <small>ERROR</small><br>
+      <small></small><br>
       {{ $error_number }}
-      <hr>
+      
     </div>
     <div class="error_title">
       @yield('title')

@@ -5,7 +5,7 @@ function getLDAPDomain() {
 	if ($domain == '') {
 		$domain = $_SERVER["USERDOMAIN"];
 	}
-	return $domain;
+	return strtoupper($domain);
 }
 
 function ldapcheckfixdates($v) {
@@ -190,7 +190,7 @@ function ldapinfoByAttr($attrN, $attrV) {
 					}
 				}
 			}
-		}
+		} else { return ldap_error($ldap);}
 	}
 	return $ldapinfo;
 }
@@ -499,5 +499,5 @@ function setCurrentUserDomain($adomain) {
 }
 
 function getCurrentUserDomain() {
-	return config('qticket.LDAP_USER_DOMAIN');
+	return strtoupper(config('qticket.LDAP_USER_DOMAIN'));
 }
